@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ボイスドラマ ランキングハブ</title>
+<title>ボイスドラマ ランキングハブ［テスト］</title>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;500;600&family=Noto+Sans+JP:wght@400;500&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 <style>
@@ -22,39 +22,52 @@
 body{font-family:'Noto Sans JP',sans-serif;background:var(--bg);color:var(--ink);min-height:100vh}
 .hub-wrap{max-width:820px;margin:0 auto;padding:32px 16px 60px}
 
-/* ヘッダー */
-.hub-header{background:linear-gradient(160deg,var(--plum-dark) 0%,var(--plum) 55%,var(--plum-dark) 100%);border-radius:18px;padding:32px 28px 26px;text-align:center;margin-bottom:0;box-shadow:0 20px 50px rgba(60,36,64,.18)}
+/* アイコン切り替えバー */
+.icon-switcher{display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:16px;font-size:11px;color:var(--muted)}
+.icon-switcher button{padding:5px 14px;border-radius:20px;border:0.5px solid var(--border);background:#fff;font-size:11px;font-family:'Noto Sans JP',sans-serif;cursor:pointer;color:var(--muted);transition:all .15s}
+.icon-switcher button.active{background:var(--plum-dark);color:var(--gold);border-color:var(--plum-dark)}
+
+.hub-card{border-radius:18px;overflow:hidden;box-shadow:0 20px 50px rgba(60,36,64,.18);margin-bottom:24px}
+.hub-header{background:linear-gradient(160deg,var(--plum-dark) 0%,var(--plum) 55%,var(--plum-dark) 100%);padding:32px 28px 26px;text-align:center}
 .hub-gold-line{width:38px;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent);margin:0 auto}
 .hub-title{font-family:'Noto Serif JP',serif;font-size:22px;font-weight:600;color:#f6ecf0;letter-spacing:.1em;line-height:1.4;margin:12px 0}
 .hub-sub{font-size:12px;color:#d8b8d3;letter-spacing:.06em;font-family:'Noto Serif JP',serif}
-.hub-update{display:inline-flex;gap:5px;align-items:center;font-size:10.5px;font-weight:600;color:var(--plum-dark);background:var(--gold);padding:5px 14px;border-radius:20px;margin-top:12px;white-space:nowrap;letter-spacing:.03em}
-
-/* タブバー */
-.site-tabs{display:flex;background:#fff;border-bottom:2px solid var(--plum);border-radius:0 0 0 0;margin-bottom:0}
+.hub-update{display:inline-flex;gap:5px;align-items:center;font-size:10.5px;font-weight:600;color:var(--plum-dark);background:var(--gold);padding:5px 14px;border-radius:20px;margin-top:12px;white-space:nowrap}
+.hub-tabs-bar{background:#fff;border-bottom:2px solid var(--plum)}
+.site-tabs{display:flex}
 .site-tab{flex:1;text-align:center;padding:14px 2px;font-size:11px;font-weight:600;white-space:nowrap;cursor:pointer;color:#b39aae;border:none;background:transparent;border-bottom:2px solid transparent;margin-bottom:-2px;font-family:'Noto Sans JP',sans-serif;transition:color .15s}
 .site-tab:hover{color:var(--plum)}
 .site-tab.active{color:var(--plum);border-bottom:2px solid var(--gold)}
-
-/* ヘッダー+タブを1つのカードに */
-.hub-card{border-radius:18px;overflow:hidden;box-shadow:0 20px 50px rgba(60,36,64,.18);margin-bottom:24px}
-.hub-tabs-bar{background:#fff;border-bottom:2px solid var(--plum)}
-
 .site-panel{display:none}
 .site-panel.active{display:block}
 
 /* 統計カード */
 .stat-row{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:20px}
-.stat-card{background:#fff;border:0.5px solid var(--border);border-radius:14px;padding:14px 16px}
+.stat-card{background:#fff;border:0.5px solid var(--border);border-radius:14px;padding:14px 16px;display:flex;align-items:flex-start;gap:12px}
+.stat-icon-wrap{flex:none;display:flex;align-items:center;justify-content:center}
+.stat-text{flex:1;min-width:0}
 .stat-label{font-size:11px;color:var(--muted);margin-bottom:6px}
 .stat-value{font-family:'Noto Serif JP',serif;font-size:26px;font-weight:500;color:var(--accent-800)}
 .stat-sub{font-size:10px;color:var(--muted);margin-top:3px}
+
+/* 3aアイコン：プラム円＋金ラインアイコン */
+.icon-3a{width:36px;height:36px;border-radius:50%;background:var(--plum-dark);display:flex;align-items:center;justify-content:center;flex:none}
+.icon-3a svg{width:18px;height:18px}
+
+/* 3cアイコン：円なし、金色ラインのみ */
+.icon-3c{width:28px;height:28px;display:flex;align-items:center;justify-content:center;flex:none}
+.icon-3c svg{width:22px;height:22px}
+
+/* アイコンモード切り替え */
+body.mode-3a .stat-card{gap:12px}
+body.mode-3c .stat-card{gap:8px}
+body.mode-none .stat-icon-wrap{display:none}
 
 .section{margin-bottom:28px}
 .section-head{display:flex;align-items:center;gap:8px;margin-bottom:12px}
 .section-title{font-family:'Noto Serif JP',serif;font-size:15px;font-weight:500;color:var(--accent-800)}
 .section-badge{font-size:10px;background:var(--accent-100);color:var(--accent-600);border:0.5px solid var(--border);border-radius:20px;padding:2px 9px}
 .section-badge-new{font-size:10px;background:#ecfdf5;color:#065f46;border:0.5px solid #6ee7b7;border-radius:20px;padding:2px 9px}
-
 .table-card{background:#fff;border:0.5px solid var(--border);border-radius:16px;overflow:hidden}
 table{width:100%;border-collapse:collapse;font-size:12px;table-layout:fixed}
 thead th{background:#fafafa;color:var(--accent-800);font-weight:500;padding:10px 8px;border-bottom:0.5px solid var(--border-light);text-align:left;font-size:11px}
@@ -62,19 +75,16 @@ tbody td{padding:6px 8px;border-bottom:0.5px solid var(--border-light);vertical-
 tbody td.thumb-wrap{vertical-align:middle}
 tbody tr:last-child td{border-bottom:none}
 tbody tr:hover td{background:var(--accent-50)}
-
 .rb{display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;border-radius:50%;font-size:11px;font-weight:500}
 .r1{background:#fef3c7;color:#92400e;border:0.5px solid #fde68a}
 .r2{background:#f1f5f9;color:#475569;border:0.5px solid #e2e8f0}
 .r3{background:#fef0e6;color:#9a3412;border:0.5px solid #fed7aa}
 .rn{background:var(--accent-50);color:var(--accent-muted);border:0.5px solid var(--border-light)}
-
 .thumb-wrap{width:150px;min-width:150px;padding:4px 6px 4px 8px;position:relative}
 .thumb-wrap img{width:146px;height:110px;object-fit:cover;border-radius:8px;border:0.5px solid var(--border-light);display:block}
 .thumb-wrap a{display:block}
 .thumb-rank{position:absolute;top:7px;left:11px;z-index:1}
 .no-thumb{width:146px;height:110px;border-radius:8px;background:var(--accent-100);display:flex;align-items:center;justify-content:center;font-size:28px;border:0.5px solid var(--border-light)}
-
 .title-cell{padding-left:8px !important}
 .work-title{font-weight:500;color:var(--accent-800);font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .work-title a{color:var(--accent-800);text-decoration:none}
@@ -83,7 +93,6 @@ tbody tr:hover td{background:var(--accent-50)}
 .work-date{font-size:10px;color:var(--muted);margin-right:4px;white-space:nowrap}
 .genres{display:flex;flex-wrap:wrap;gap:3px;margin-top:3px}
 .gtag{display:inline-block;font-size:9px;background:var(--accent-50);color:var(--accent-muted);border:0.5px solid var(--border-light);border-radius:20px;padding:1px 6px;white-space:nowrap}
-
 .rise-pill{display:inline-flex;align-items:center;gap:2px;background:var(--accent-50);color:var(--accent-600);border:0.5px solid var(--border);border-radius:20px;padding:3px 8px;font-size:11px;font-weight:500}
 .tup{font-size:11px;font-weight:500;color:#be123c}
 .tdn{font-size:11px;font-weight:500;color:#0369a1}
@@ -95,25 +104,22 @@ tbody tr:hover td{background:var(--accent-50)}
 .empty-msg{text-align:center;padding:24px;color:var(--muted);font-size:12px}
 .loading-msg{text-align:center;padding:40px;color:var(--muted);font-size:13px}
 .error-msg{text-align:center;padding:24px;color:#9a3412;font-size:12px;background:#fff7ed;border-radius:12px}
+.hub-footer{text-align:center;margin-top:40px;font-size:11px;padding-top:20px;border-top:0.5px solid var(--border-light);font-family:'Noto Serif JP',serif;line-height:1.7;color:#c2a4bc}
 
-.hub-footer{text-align:center;margin-top:40px;font-size:11px;color:var(--muted);padding-top:20px;border-top:0.5px solid var(--border-light);font-family:'Noto Serif JP',serif;line-height:1.7;color:#c2a4bc}
-
-@media (max-width:640px){
+@media(max-width:640px){
     .hub-wrap{padding:12px 8px 40px}
     .hub-title{font-size:17px}
-    .hub-sub{font-size:10px}
-    .hub-update{font-size:9px;padding:4px 10px}
     .site-tab{font-size:9px;padding:10px 1px}
     .stat-row{gap:5px}
-    .stat-card{padding:8px 6px}
+    .stat-card{padding:8px 6px;gap:8px}
     .stat-value{font-size:18px}
     .stat-label{font-size:8px}
-    .stat-sub{font-size:7px}
-    .table-card{overflow:visible}
+    .icon-3a{width:28px;height:28px}
+    .icon-3a svg{width:14px;height:14px}
     table{display:block}
     thead{display:none}
     tbody{display:flex;flex-direction:column;gap:6px;padding:6px}
-    tbody tr{display:grid;grid-template-columns:110px 1fr;grid-template-rows:auto auto auto;background:#fff;border:0.5px solid var(--border);border-radius:10px;overflow:hidden;padding:0}
+    tbody tr{display:grid;grid-template-columns:110px 1fr;background:#fff;border:0.5px solid var(--border);border-radius:10px;overflow:hidden;padding:0}
     tbody td{border-bottom:none;padding:0;width:auto !important}
     tbody tr:hover td{background:transparent}
     .thumb-wrap{grid-column:1;grid-row:1/4;width:110px !important;min-width:110px;padding:6px 4px 6px 6px;position:relative}
@@ -128,13 +134,23 @@ tbody tr:hover td{background:var(--accent-50)}
 }
 </style>
 </head>
-<body>
+<body class="mode-3a">
 <div class="hub-wrap">
+
+<!-- アイコン切り替え -->
+<div class="icon-switcher">
+  <span>アイコン案：</span>
+  <button class="active" onclick="setMode('3a')">3a（プラム円＋金）</button>
+  <button onclick="setMode('3c')">3c（金ラインのみ）</button>
+  <button onclick="setMode('none')">なし（現行）</button>
+</div>
 
 <div class="hub-card">
   <div class="hub-header">
     <div class="hub-gold-line"></div>
-    <div class="hub-title">乙女向けボイス・ASMR作品 ランキング</div>
+    <div class="hub-title">ボイスドラマ<br>ランキングハブ</div>
+    <div class="hub-gold-line"></div>
+    <div class="hub-sub">乙女向けボイス・ASMR作品 ランキング</div>
     <div><div class="hub-update" id="hub-update">🔄 毎日更新 ／ ―</div></div>
   </div>
   <div class="hub-tabs-bar">
@@ -151,511 +167,201 @@ tbody tr:hover td{background:var(--accent-50)}
 <div id="panels"></div>
 
 <div class="hub-footer">
-    各サイトのデータを直接取得して表示しています。<br>更新頻度は各サイトの仕様に準じます。
+  各サイトのデータを直接取得して表示しています。<br>更新頻度は各サイトの仕様に準じます。
 </div>
-
 </div>
 
 <script>
+/* ---- SVGアイコン定義 ---- */
+const ICONS = {
+  works: {
+    '3a': `<svg viewBox="0 0 24 24" fill="none" stroke="${'#e3c081'}" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M7 8h10M7 12h10M7 16h6"/></svg>`,
+    '3c': `<svg viewBox="0 0 24 24" fill="none" stroke="${'#c79a4a'}" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M7 8h10M7 12h10M7 16h6"/></svg>`,
+  },
+  new: {
+    '3a': `<svg viewBox="0 0 24 24" fill="none" stroke="#e3c081" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>`,
+    '3c': `<svg viewBox="0 0 24 24" fill="none" stroke="#c79a4a" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>`,
+  },
+  rising: {
+    '3a': `<svg viewBox="0 0 24 24" fill="none" stroke="#e3c081" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>`,
+    '3c': `<svg viewBox="0 0 24 24" fill="none" stroke="#c79a4a" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>`,
+  },
+  ranking: {
+    '3a': `<svg viewBox="0 0 24 24" fill="none" stroke="#e3c081" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6z"/></svg>`,
+    '3c': `<svg viewBox="0 0 24 24" fill="none" stroke="#c79a4a" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6z"/></svg>`,
+  },
+  exclusive: {
+    '3a': `<svg viewBox="0 0 24 24" fill="none" stroke="#e3c081" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41l-7.17 7.17a2 2 0 01-2.83 0L2 12V2h10l8.59 8.59a2 2 0 010 2.82z"/><circle cx="7" cy="7" r="1.5" fill="#e3c081"/></svg>`,
+    '3c': `<svg viewBox="0 0 24 24" fill="none" stroke="#c79a4a" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41l-7.17 7.17a2 2 0 01-2.83 0L2 12V2h10l8.59 8.59a2 2 0 010 2.82z"/><circle cx="7" cy="7" r="1.5" fill="#c79a4a"/></svg>`,
+  },
+  preorder: {
+    '3a': `<svg viewBox="0 0 24 24" fill="none" stroke="#e3c081" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>`,
+    '3c': `<svg viewBox="0 0 24 24" fill="none" stroke="#c79a4a" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>`,
+  },
+};
+
+let currentMode = '3a';
+
+function setMode(mode) {
+  currentMode = mode;
+  document.body.className = 'mode-' + mode;
+  document.querySelectorAll('.icon-switcher button').forEach(b => b.classList.remove('active'));
+  event.target.classList.add('active');
+  // パネルを再描画
+  const activeTab = document.querySelector('.site-tab.active');
+  if (activeTab) {
+    const siteKey = activeTab.dataset.site;
+    if (cache[siteKey]) renderAndMount(siteKey, cache[siteKey]);
+  }
+}
+
+function iconHtml(type) {
+  if (currentMode === 'none') return '';
+  const svg = ICONS[type]?.[currentMode] || '';
+  const cls = currentMode === '3a' ? 'icon-3a' : 'icon-3c';
+  return `<div class="stat-icon-wrap"><div class="${cls}">${svg}</div></div>`;
+}
+
 const SOURCES = {
-    garu: {
-        url: "https://garumaninow.onrender.com/api/ranking",
-        label: "DLsiteがるまに ランキング分析",
-        sub: "乙女向けボイス・ASMR作品データ",
-        accentClass: "site-garu",
-        statLabels: ["📦 収録作品数", "✨ 新着", "📈 急上昇作品"],
-        statSubs: ["2026年発売作品", null, "前日比10位以上上昇"],
-    },
-    stella: {
-        url: "https://jikaseiorangette.github.io/stellaplayer-ranking/data/ranking.json",
-        label: "ステラプレイヤー ランキング分析",
-        sub: "オトメ向けボイス・音声作品データ",
-        accentClass: "site-stella",
-        statLabels: ["📦 収録作品数", "✨ 新着", "🔔 近日配信予定"],
-        statSubs: ["2026年発売作品", null, "データあり・配信開始前"],
-    },
-    poke: {
-        url: "https://jikaseiorangette.github.io/pokedora-ranking/data/latest_adt.json",
-        metaUrl: "https://jikaseiorangette.github.io/pokedora-ranking/data/meta_adt.json",
-        graphUrl: "https://jikaseiorangette.github.io/pokedora-ranking/data/graph_adt.json",
-        label: "ポケドラ ランキング分析",
-        sub: "ドラマCD人気作品データ",
-        accentClass: "site-poke",
-        statLabels: ["📦 収録作品数", "✨ 新着", "🔔 近日配信予定"],
-        statSubs: ["オトナ向け全作品", null, "配信開始前の作品"],
-    },
-    garucomm: {
-        url: "https://jikaseiorangette.github.io/garumani-ranking/data/latest.json",
-        metaUrl: "https://jikaseiorangette.github.io/garumani-ranking/data/meta.json",
-        graphUrl: "https://jikaseiorangette.github.io/garumani-ranking/data/graph.json",
-        label: "がるまに商業 ランキング分析",
-        sub: "DLsite商業ガールズドラマ作品データ",
-        accentClass: "site-garucomm",
-        statLabels: ["📦 収録作品数", "✨ 新着", "🔖 がるまに独占"],
-        statSubs: ["2026年発売作品", null, "TOP10内の独占作品数"],
-    },
-    lovecul: {
-        url: "https://jikaseiorangette.github.io/lovecul-ranking/data/latest.json",
-        metaUrl: "https://jikaseiorangette.github.io/lovecul-ranking/data/meta.json",
-        graphUrl: "https://jikaseiorangette.github.io/lovecul-ranking/data/graph.json",
-        label: "らぶカル ランキング分析",
-        sub: "DMM TL/乙女向けボイス作品データ",
-        accentClass: "site-lovecul",
-        statLabels: ["📦 2026年発売作品", "✨ 新着", "🔥 セール中"],
-        statSubs: ["2026年発売作品数", null, "TOP10内のセール作品数"],
-    },
+    garu:{url:"https://garumaninow.onrender.com/api/ranking",label:"DLsiteがるまに ランキング分析",accentClass:"site-garu",statLabels:["収録作品数","新着","急上昇作品"],statSubs:["2026年発売作品",null,"前日比10位以上上昇"],statIcons:["works","new","rising"]},
+    stella:{url:"https://jikaseiorangette.github.io/stellaplayer-ranking/data/ranking.json",label:"ステラプレイヤー ランキング分析",accentClass:"site-stella",statLabels:["収録作品数","新着","近日配信予定"],statSubs:["2026年発売作品",null,"データあり・配信開始前"],statIcons:["works","new","preorder"]},
+    poke:{url:"https://jikaseiorangette.github.io/pokedora-ranking/data/latest_adt.json",metaUrl:"https://jikaseiorangette.github.io/pokedora-ranking/data/meta_adt.json",graphUrl:"https://jikaseiorangette.github.io/pokedora-ranking/data/graph_adt.json",label:"ポケドラ ランキング分析",accentClass:"site-poke",statLabels:["収録作品数","新着","近日配信予定"],statSubs:["オトナ向け全作品",null,"配信開始前の作品"],statIcons:["works","new","preorder"]},
+    garucomm:{url:"https://jikaseiorangette.github.io/garumani-ranking/data/latest.json",metaUrl:"https://jikaseiorangette.github.io/garumani-ranking/data/meta.json",graphUrl:"https://jikaseiorangette.github.io/garumani-ranking/data/graph.json",label:"がるまに商業 ランキング分析",accentClass:"site-garucomm",statLabels:["収録作品数","新着","がるまに独占"],statSubs:["2026年発売作品",null,"TOP10内の独占作品数"],statIcons:["works","new","exclusive"]},
+    lovecul:{url:"https://jikaseiorangette.github.io/lovecul-ranking/data/latest.json",metaUrl:"https://jikaseiorangette.github.io/lovecul-ranking/data/meta.json",graphUrl:"https://jikaseiorangette.github.io/lovecul-ranking/data/graph.json",label:"らぶカル ランキング分析",accentClass:"site-lovecul",statLabels:["2026年発売作品","新着","急上昇/新着"],statSubs:["2026年発売作品数",null,"前日比10位以上上昇"],statIcons:["works","new","rising"]},
 };
 
 const cache = {};
 
 function normalizeGaru(data) {
-    const mapItem = (r, extra) => ({
-        id: r.work_id, title: r.title, sub: r.voice_actor || "",
-        url: r.affiliate_url || "#", img: r.thumb_url || "",
-        tags: (r.genre || "").split(",").map(s => s.trim()).filter(Boolean).slice(0, 4),
-        releaseDate: r.release_date || "", circle: r.circle || "", ...extra,
-    });
-    const ranking = (data.ranking || []).map(r => mapItem(r, {
-        rank: r.rank, rankChange: r.is_new ? null : (r.rank_change || 0), isNew: !!r.is_new,
-    }));
-    const rising = (data.rising || []).map(r => mapItem(r, { rank: r.rank, rise: r.rise }));
-    const newTop3 = (data.new_top3 || []).map(r => mapItem(r, { rank: r.rank }));
-    const randomNew = (data.random_new || []).map(r => mapItem(r, {}));
-    return {
-        stats: [data.total_works ?? "—", data.new_today ?? "—", data.rising_count ?? "—"],
-        ranking, rising, preorders: [], newTop3, randomNew,
-        showNewTop3: !!data.show_new_top3, showRandomNew: !!data.show_random_new,
-        graphData: data.graph_data || {}, updated: data.today_str || "",
-    };
+    const mapItem=(r,extra)=>({id:r.work_id,title:r.title,sub:r.voice_actor||"",url:r.affiliate_url||"#",img:r.thumb_url||"",tags:(r.genre||"").split(",").map(s=>s.trim()).filter(Boolean).slice(0,4),releaseDate:r.release_date||"",circle:r.circle||"",...extra});
+    return {stats:[data.total_works??"—",data.new_today??"—",data.rising_count??"—"],ranking:(data.ranking||[]).map(r=>mapItem(r,{rank:r.rank,rankChange:r.is_new?null:(r.rank_change||0),isNew:!!r.is_new})),rising:(data.rising||[]).map(r=>mapItem(r,{rank:r.rank,rise:r.rise})),preorders:[],newTop3:(data.new_top3||[]).map(r=>mapItem(r,{rank:r.rank})),randomNew:(data.random_new||[]).map(r=>mapItem(r,{})),showNewTop3:!!data.show_new_top3,showRandomNew:!!data.show_random_new,graphData:data.graph_data||{},updated:data.today_str||""};
 }
-
 function normalizeStella(data) {
-    const items = (data.categories && data.categories.GIRLS) || [];
-    const ranking = items.map(it => ({
-        id: it.product_id, title: it.title, sub: it.cv || "",
-        url: it.link || "#", img: it.img || "",
-        tags: (it.tags || []).slice(0, 4), rank: it.rank,
-        rankChange: it.prev_rank ? (it.prev_rank - it.rank) : null,
-        isNew: !!it.is_new, releaseDate: it.release_date || "", circle: it.circle || "",
-    }));
-    const preorders = (data.preorders || []).slice(0, 2).map(p => ({
-        id: p.id, title: p.title, sub: p.cv || "",
-        url: `https://www.stellaplayer.jp/product/${p.id}`, img: p.img || "",
-        tags: (p.tags || []).slice(0, 4),
-        releaseDate: p.release_date || "", streamDate: p.streaming_date || "", circle: p.circle || "",
-    }));
-    const today = new Date();
-    const fullLabels = [];
-    for (let i = 29; i >= 0; i--) { const d = new Date(today); d.setDate(d.getDate() - i); fullLabels.push(d.toISOString().slice(0, 10)); }
-    const graphData = {};
-    items.forEach(it => {
-        const hist = it.history || [];
-        const histMap = {};
-        hist.forEach(h => { histMap[h.date] = h.rank; });
-        const firstDate = hist.length ? hist.reduce((a, b) => a.date < b.date ? a : b).date : null;
-        const ranks = fullLabels.map(l => {
-            if (histMap[l] !== undefined) return histMap[l];
-            if (firstDate && l > firstDate) return 21;
-            return null;
-        });
-        graphData[it.product_id] = { labels: fullLabels, ranks };
-    });
-    return {
-        stats: [data.total_products ?? "—", "—", (data.preorders || []).length || "—"],
-        ranking, rising: [], preorders, newTop3: [], randomNew: [],
-        showNewTop3: false, showRandomNew: false, graphData, updated: data.updated || "",
-    };
+    const items=(data.categories&&data.categories.GIRLS)||[];
+    const today=new Date(),fullLabels=[];
+    for(let i=29;i>=0;i--){const d=new Date(today);d.setDate(d.getDate()-i);fullLabels.push(d.toISOString().slice(0,10));}
+    const graphData={};
+    items.forEach(it=>{const hist=it.history||[],histMap={};hist.forEach(h=>{histMap[h.date]=h.rank;});const firstDate=hist.length?hist.reduce((a,b)=>a.date<b.date?a:b).date:null;graphData[it.product_id]={labels:fullLabels,ranks:fullLabels.map(l=>histMap[l]!==undefined?histMap[l]:(firstDate&&l>firstDate?21:null))};});
+    return {stats:[data.total_products??"—","—",(data.preorders||[]).length||"—"],ranking:items.map(it=>({id:it.product_id,title:it.title,sub:it.cv||"",url:it.link||"#",img:it.img||"",tags:(it.tags||[]).slice(0,4),rank:it.rank,rankChange:it.prev_rank?(it.prev_rank-it.rank):null,isNew:!!it.is_new,releaseDate:it.release_date||"",circle:it.circle||""})),rising:[],preorders:(data.preorders||[]).slice(0,2).map(p=>({id:p.id,title:p.title,sub:p.cv||"",url:`https://www.stellaplayer.jp/product/${p.id}`,img:p.img||"",tags:(p.tags||[]).slice(0,4),releaseDate:p.release_date||"",streamDate:p.streaming_date||"",circle:p.circle||""})),newTop3:[],randomNew:[],showNewTop3:false,showRandomNew:false,graphData,updated:data.updated||""};
 }
+function normalizePoke(items,meta,graphRaw) {
+    items=Array.isArray(items)?items:[];meta=meta||{};graphRaw=graphRaw||{};
+    const today=new Date(),fullLabels=[];
+    for(let i=29;i>=0;i--){const d=new Date(today);d.setDate(d.getDate()-i);fullLabels.push(d.toISOString().slice(0,10));}
+    const graphData={};
+    Object.entries(graphRaw).forEach(([pid,gd])=>{const rl=gd.labels||[],rr=gd.ranks||[],hm={};rl.forEach((l,i)=>{if(rr[i]!==null&&rr[i]!==undefined)hm[l]=rr[i];});const fd=rl.find((l,i)=>rr[i]!==null&&rr[i]!==undefined);graphData[pid]={labels:fullLabels,ranks:fullLabels.map(l=>hm[l]!==undefined?hm[l]:(fd&&l>fd?21:null))};});
+    const newWorkIds=new Set(meta.new_work_ids||[]);
+    return {stats:[meta.total_works??(items.length||"—"),meta.new_today??"—",meta.preorder_count??(meta.preorders||[]).length??"—"],ranking:items.map(it=>({id:it.product_id,title:it.title.replace(/《?配信開始は[^》）]+[》）]?\s*/g,'').trim(),sub:it.voice_actor||"",url:it.work_url||"#",img:it.thumb_url||`https://pokedora.com/get_image.php?product_id=${it.product_id}`,tags:(it.tags||[]).slice(0,4),rank:it.rank,rankChange:null,isNew:newWorkIds.has(it.product_id),releaseDate:it.release_date||it.scheduled_date||"",circle:""})),rising:[],preorders:(meta.preorders||[]).slice(0,2).map(p=>({id:p.id,title:p.title,sub:p.voice_actor||"",url:p.work_url||`https://pokedora.com/products/detail.php?product_id=${p.id}`,img:p.thumb_url||`https://pokedora.com/get_image.php?product_id=${p.id}`,tags:(p.tags||[]).slice(0,4),releaseDate:p.release_date||"",streamDate:p.registered_date||"",circle:""})),newTop3:[],randomNew:[],showNewTop3:false,showRandomNew:false,graphData,updated:meta.updated||""};
+}
+function normalizeGaruComm(items,meta,graphRaw) {
+    items=Array.isArray(items)?items:[];meta=meta||{};graphRaw=graphRaw||{};
+    const today=new Date(),fullLabels=[];
+    for(let i=29;i>=0;i--){const d=new Date(today);d.setDate(d.getDate()-i);fullLabels.push(d.toISOString().slice(0,10));}
+    const graphData={};
+    Object.entries(graphRaw).forEach(([pid,gd])=>{const rl=gd.labels||[],rr=gd.ranks||[],hm={};rl.forEach((l,i)=>{if(rr[i]!==null&&rr[i]!==undefined)hm[l]=rr[i];});const fd=rl.find((l,i)=>rr[i]!==null&&rr[i]!==undefined);graphData[pid]={labels:fullLabels,ranks:fullLabels.map(l=>hm[l]!==undefined?hm[l]:(fd&&l>fd?21:null))};});
+    const newWorkIds=new Set(meta.new_work_ids||[]);
+    const ranking=items.map(it=>{const pid=it.product_id,g=graphData[pid];let rankChange=null;if(g&&g.ranks){const nn=g.ranks.filter(v=>v!==null&&v!==undefined);if(nn.length>=2)rankChange=nn[nn.length-2]-it.rank;}const isNew=!!(it.is_new||newWorkIds.has(pid));return {id:pid,title:it.title,sub:it.cv||"",url:it.work_url||"#",img:it.thumb_url||"",tags:[...(it.is_exclusive?["がるまに独占"]:[]),...(it.is_sale?["セール中"]:[]),...(it.genres||[]).slice(0,4)],rank:it.rank,rankChange:isNew?null:rankChange,rise:isNew?null:rankChange,isNew,releaseDate:it.release_date||"",circle:it.circle||""};});
+    const exclusiveCount=items.filter(it=>it.is_exclusive&&it.rank<=10).length;
+    const exclusivePickup=items.filter(it=>it.is_exclusive).slice(0,2).map(it=>({id:it.product_id,title:it.title,sub:it.cv||"",url:it.work_url||"#",img:it.thumb_url||"",tags:[...(it.is_exclusive?["がるまに独占"]:[]),...(it.is_sale?["セール中"]:[]),...(it.genres||[]).slice(0,4)],rank:it.rank,releaseDate:it.release_date||"",circle:it.circle||""}));
+    return {stats:[meta.total_works??"—",meta.new_today??"—",exclusiveCount||"—"],ranking,rising:[],preorders:[],newTop3:[],randomNew:[],showNewTop3:false,showRandomNew:false,exclusivePickup,graphData,updated:meta.updated||""};
+}
+function normalizeLovecul(items,meta,graphRaw) {
+    items=Array.isArray(items)?items:[];meta=meta||{};graphRaw=graphRaw||{};
+    const today=new Date(),fullLabels=[];
+    for(let i=29;i>=0;i--){const d=new Date(today);d.setDate(d.getDate()-i);fullLabels.push(d.toISOString().slice(0,10));}
+    const graphData={};
+    Object.entries(graphRaw).forEach(([cid,gd])=>{const rl=gd.labels||[],rr=gd.ranks||[],hm={};rl.forEach((l,i)=>{if(rr[i]!==null&&rr[i]!==undefined)hm[l]=rr[i];});const fd=rl.find((l,i)=>rr[i]!==null&&rr[i]!==undefined);graphData[cid]={labels:fullLabels,ranks:fullLabels.map(l=>hm[l]!==undefined?hm[l]:(fd&&l>fd?21:null))};});
+    const newWorkIds=new Set(meta.new_work_ids||[]);
+    const ranking=items.map(it=>{const cid=it.cid,g=graphData[cid];let rankChange=null;if(g&&g.ranks){const nn=g.ranks.filter(v=>v!==null&&v!==undefined);if(nn.length>=2)rankChange=nn[nn.length-2]-it.rank;}const isNew=!!(it.is_new||newWorkIds.has(cid));return {id:cid,title:it.title,sub:it.cv||"",url:it.work_url||"#",img:it.thumb_url||"",tags:[...(it.is_sale?["セール中"]:[]),...(it.genres||[]).slice(0,4)],rank:it.rank,rankChange:isNew?null:rankChange,rise:isNew?null:rankChange,isNew,releaseDate:it.release_date||"",circle:it.circle||""};});
+    const risingWorks=ranking.filter(it=>!it.isNew&&it.rankChange!==null&&it.rankChange>=10).slice(0,2);
+    return {stats:[meta.total_works??"—",meta.new_today??"—",risingWorks.length>0?risingWorks.length:(meta.new_today??"—")],stat3Label:risingWorks.length>0?"📈 急上昇作品":"✨ 新着作品",stat3Sub:risingWorks.length>0?"前日比10位以上上昇":"本日発売",ranking,rising:risingWorks,preorders:[],newTop3:[],randomNew:[],showNewTop3:false,showRandomNew:false,graphData,updated:meta.updated||""};
+}
+function normalize(k,r,m,g){if(k==="garu")return normalizeGaru(r);if(k==="stella")return normalizeStella(r);if(k==="poke")return normalizePoke(r,m,g);if(k==="garucomm")return normalizeGaruComm(r,m,g);if(k==="lovecul")return normalizeLovecul(r,m,g);return {stats:["—","—","—"],ranking:[],rising:[],preorders:[],graphData:{},updated:""};}
 
-function normalizePoke(items, meta, graphRaw) {
-    items = Array.isArray(items) ? items : [];
-    meta = meta || {}; graphRaw = graphRaw || {};
-    const today = new Date(); const fullLabels = [];
-    for (let i = 29; i >= 0; i--) { const d = new Date(today); d.setDate(d.getDate() - i); fullLabels.push(d.toISOString().slice(0, 10)); }
-    const graphData = {};
-    Object.entries(graphRaw).forEach(([pid, gd]) => {
-        const rawLabels = gd.labels || [], rawRanks = gd.ranks || [], histMap = {};
-        rawLabels.forEach((l, i) => { if (rawRanks[i] !== null && rawRanks[i] !== undefined) histMap[l] = rawRanks[i]; });
-        const firstDate = rawLabels.find((l, i) => rawRanks[i] !== null && rawRanks[i] !== undefined);
-        graphData[pid] = { labels: fullLabels, ranks: fullLabels.map(l => histMap[l] !== undefined ? histMap[l] : (firstDate && l > firstDate ? 21 : null)) };
-    });
-    const newWorkIds = new Set(meta.new_work_ids || []);
-    const ranking = items.map(it => {
-        const pid = it.product_id, g = graphData[pid];
-        let rankChange = null;
-        if (g && g.ranks) { const nn = g.ranks.filter(v => v !== null && v !== undefined); if (nn.length >= 2) { const tr = g.ranks[g.ranks.length-1]; let pr = null; for (let i = g.ranks.length-2; i >= 0; i--) { if (g.ranks[i] !== null && g.ranks[i] !== undefined) { pr = g.ranks[i]; break; } } if (pr !== null && tr !== null) rankChange = pr - tr; } }
-        return {
-            id: pid, title: it.title.replace(/《?配信開始は[^》）]+[》）]?\s*/g,'').trim(),
-            sub: it.voice_actor || "", url: it.work_url || "#",
-            img: it.thumb_url || `https://pokedora.com/get_image.php?product_id=${pid}`,
-            tags: (it.tags || []).slice(0, 4), rank: it.rank, rankChange,
-            isNew: newWorkIds.has(pid),
-            releaseDate: it.release_date || it.scheduled_date || "", circle: "",
-        };
-    });
-    const preorders = (meta.preorders || []).slice(0, 2).map(p => ({
-        id: p.id, title: p.title, sub: p.voice_actor || "",
-        url: p.work_url || `https://pokedora.com/products/detail.php?product_id=${p.id}`,
-        img: p.thumb_url || `https://pokedora.com/get_image.php?product_id=${p.id}`,
-        tags: (p.tags || []).slice(0, 4), releaseDate: p.release_date || "", streamDate: p.registered_date || "", circle: "",
-    }));
-    return {
-        stats: [meta.total_works ?? (items.length || "—"), meta.new_today ?? "—", meta.preorder_count ?? preorders.length ?? "—"],
-        ranking, rising: [], preorders, newTop3: [], randomNew: [],
-        showNewTop3: false, showRandomNew: false, graphData, updated: meta.updated || "",
-    };
-}
+function esc(s){return String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));}
+function rankBadgeClass(r){return r===1?"r1":r===2?"r2":r===3?"r3":"rn";}
+function thumbHtml(item){return item.img?`<img src="${esc(item.img)}" alt="" loading="lazy" onerror="this.outerHTML='<div class=&quot;no-thumb&quot;>🎧</div>'">`:`<div class="no-thumb">🎧</div>`;}
+function tagsHtml(tags){if(!tags||!tags.length)return"";const ts=t=>{if(t==="がるまに独占")return`<span class="gtag" style="background:#fefce8;color:#854d0e;border-color:#fde047;font-weight:500">${esc(t)}</span>`;if(t==="セール中")return`<span class="gtag" style="background:#f0fdf4;color:#166534;border-color:#86efac;font-weight:500">${esc(t)}</span>`;return`<span class="gtag">${esc(t)}</span>`;};return`<div class="genres">${tags.map(ts).join("")}</div>`;}
+function changeHtml(item){if(item.isNew)return`<span class="tnew">🆕 新着</span>`;const c=item.rankChange;if(c===null||c===undefined)return`<span class="tsm">－</span>`;if(c>0)return`<span class="tup">▲${c}</span>`;if(c<0)return`<span class="tdn">▼${Math.abs(c)}</span>`;return`<span class="tsm">－</span>`;}
+function rankRow(item,canvasId){const rb=`<span class="rb ${rankBadgeClass(item.rank)}">${item.rank}</span>`;const ds=item.releaseDate?`<span class="work-date">${esc(item.releaseDate)}</span>`:"";return`<tr><td class="thumb-wrap"><span class="thumb-rank">${rb}</span><a href="${esc(item.url)}" target="_blank" rel="noopener">${thumbHtml(item)}</a></td><td class="title-cell"><div class="work-title"><a href="${esc(item.url)}" target="_blank" rel="noopener">${esc(item.title)}</a></div><div class="work-circle">${ds}${esc(item.circle||"")}</div>${tagsHtml(item.tags)}</td><td style="font-size:11px;color:var(--accent-sub)">${esc(item.sub)}</td><td>${changeHtml(item)}</td><td class="chart-cell"><canvas id="${canvasId}" class="chart-wrap" data-id="${esc(item.id)}"></canvas></td></tr>`;}
+function risingRow(item,canvasId){const rb=`<span class="rb ${rankBadgeClass(item.rank)}">${item.rank}</span>`;const ds=item.releaseDate?`<span class="work-date">${esc(item.releaseDate)}</span>`:"";return`<tr><td class="thumb-wrap"><span class="thumb-rank">${rb}</span><a href="${esc(item.url)}" target="_blank" rel="noopener">${thumbHtml(item)}</a></td><td class="title-cell"><div class="work-title"><a href="${esc(item.url)}" target="_blank" rel="noopener">${esc(item.title)}</a></div><div class="work-circle">${ds}${esc(item.circle||"")}</div>${tagsHtml(item.tags)}</td><td style="font-size:11px;color:var(--accent-sub)">${esc(item.sub)}</td><td><span class="rise-pill">▲${item.rise}位UP</span></td><td class="chart-cell"><canvas id="${canvasId}" class="chart-wrap" data-id="${esc(item.id)}"></canvas></td></tr>`;}
+function preorderRow(item,index){const rb=`<span class="rb rn">${index+1}</span>`;const dl=item.streamDate?`<span style="color:var(--accent-600);margin-right:6px">予約開始: ${esc(item.streamDate)}</span>`:"";return`<tr><td class="thumb-wrap"><span class="thumb-rank">${rb}</span><a href="${esc(item.url)}" target="_blank" rel="noopener">${thumbHtml(item)}</a></td><td class="title-cell"><div class="work-title"><a href="${esc(item.url)}" target="_blank" rel="noopener">${esc(item.title)}</a></div><div class="work-circle">${dl}${esc(item.circle||"")}</div>${tagsHtml(item.tags)}</td><td style="font-size:11px;color:var(--accent-sub)">${esc(item.sub)}</td><td style="font-size:12px;color:var(--accent-800);font-weight:500">${esc(item.releaseDate||"")}</td></tr>`;}
+function newPickupRow(item,canvasId,isRandom){const rb=isRandom?`<span class="rb rn" style="font-size:9px">NEW</span>`:`<span class="rb ${rankBadgeClass(item.rank)}">${item.rank}</span>`;const ds=item.releaseDate?`<span class="work-date">${esc(item.releaseDate)}</span>`:"";return`<tr><td class="thumb-wrap"><span class="thumb-rank">${rb}</span><a href="${esc(item.url)}" target="_blank" rel="noopener">${thumbHtml(item)}</a></td><td class="title-cell"><div class="work-title"><a href="${esc(item.url)}" target="_blank" rel="noopener">${esc(item.title)}</a></div><div class="work-circle">${ds}${esc(item.circle||"")}</div>${tagsHtml(item.tags)}</td><td style="font-size:11px;color:var(--accent-sub)">${esc(item.sub)}</td><td><span class="tnew">🆕 新着</span></td><td class="chart-cell"><canvas id="${canvasId}" class="chart-wrap" data-id="${esc(item.id)}"></canvas></td></tr>`;}
 
-function normalizeGaruComm(items, meta, graphRaw) {
-    items = Array.isArray(items) ? items : [];
-    meta = meta || {}; graphRaw = graphRaw || {};
-    const today = new Date(); const fullLabels = [];
-    for (let i = 29; i >= 0; i--) { const d = new Date(today); d.setDate(d.getDate() - i); fullLabels.push(d.toISOString().slice(0, 10)); }
-    const graphData = {};
-    Object.entries(graphRaw).forEach(([pid, gd]) => {
-        const rawLabels = gd.labels || [], rawRanks = gd.ranks || [], histMap = {};
-        rawLabels.forEach((l, i) => { if (rawRanks[i] !== null && rawRanks[i] !== undefined) histMap[l] = rawRanks[i]; });
-        const firstDate = rawLabels.find((l, i) => rawRanks[i] !== null && rawRanks[i] !== undefined);
-        graphData[pid] = { labels: fullLabels, ranks: fullLabels.map(l => histMap[l] !== undefined ? histMap[l] : (firstDate && l > firstDate ? 21 : null)) };
-    });
-    const newWorkIds = new Set(meta.new_work_ids || []);
-    const ranking = items.map(it => {
-        const pid = it.product_id, g = graphData[pid];
-        let rankChange = null;
-        if (g && g.ranks) { const nn = g.ranks.filter(v => v !== null && v !== undefined); if (nn.length >= 2) rankChange = nn[nn.length-2] - it.rank; }
-        const isNew = !!(it.is_new || newWorkIds.has(pid));
-        return {
-            id: pid, title: it.title, sub: it.cv || "", url: it.work_url || "#", img: it.thumb_url || "",
-            tags: [...(it.is_exclusive?["がるまに独占"]:[]), ...(it.is_sale?["セール中"]:[]), ...(it.genres||[]).slice(0,4)],
-            rank: it.rank, rankChange: isNew ? null : rankChange, rise: isNew ? null : rankChange,
-            isNew, releaseDate: it.release_date || "", circle: it.circle || "",
-        };
-    });
-    const exclusiveCount = items.filter(it => it.is_exclusive && it.rank <= 10).length;
-    const exclusivePickup = items.filter(it => it.is_exclusive).slice(0, 2).map(it => ({
-        id: it.product_id, title: it.title, sub: it.cv || "", url: it.work_url || "#", img: it.thumb_url || "",
-        tags: [...(it.is_exclusive?["がるまに独占"]:[]), ...(it.is_sale?["セール中"]:[]), ...(it.genres||[]).slice(0,4)],
-        rank: it.rank, releaseDate: it.release_date || "", circle: it.circle || "",
-    }));
-    return {
-        stats: [meta.total_works ?? "—", meta.new_today ?? "—", exclusiveCount || "—"],
-        ranking, rising: [], preorders: [], newTop3: [], randomNew: [],
-        showNewTop3: false, showRandomNew: false, exclusivePickup, graphData, updated: meta.updated || "",
-    };
-}
-
-function normalizeLovecul(items, meta, graphRaw) {
-    items = Array.isArray(items) ? items : [];
-    meta = meta || {}; graphRaw = graphRaw || {};
-    const today = new Date(); const fullLabels = [];
-    for (let i = 29; i >= 0; i--) { const d = new Date(today); d.setDate(d.getDate() - i); fullLabels.push(d.toISOString().slice(0, 10)); }
-    const graphData = {};
-    Object.entries(graphRaw).forEach(([cid, gd]) => {
-        const rawLabels = gd.labels || [], rawRanks = gd.ranks || [], histMap = {};
-        rawLabels.forEach((l, i) => { if (rawRanks[i] !== null && rawRanks[i] !== undefined) histMap[l] = rawRanks[i]; });
-        const firstDate = rawLabels.find((l, i) => rawRanks[i] !== null && rawRanks[i] !== undefined);
-        graphData[cid] = { labels: fullLabels, ranks: fullLabels.map(l => histMap[l] !== undefined ? histMap[l] : (firstDate && l > firstDate ? 21 : null)) };
-    });
-    const newWorkIds = new Set(meta.new_work_ids || []);
-    const ranking = items.map(it => {
-        const cid = it.cid, g = graphData[cid];
-        let rankChange = null;
-        if (g && g.ranks) { const nn = g.ranks.filter(v => v !== null && v !== undefined); if (nn.length >= 2) rankChange = nn[nn.length-2] - it.rank; }
-        const isNew = !!(it.is_new || newWorkIds.has(cid));
-        return {
-            id: cid, title: it.title, sub: it.cv || "", url: it.work_url || "#", img: it.thumb_url || "",
-            tags: [...(it.is_sale?["セール中"]:[]), ...(it.genres||[]).slice(0,4)],
-            rank: it.rank, rankChange: isNew ? null : rankChange, rise: isNew ? null : rankChange,
-            isNew, releaseDate: it.release_date || "", circle: it.circle || "",
-        };
-    });
-    const risingWorks = ranking.filter(it => !it.isNew && it.rankChange !== null && it.rankChange >= 10).slice(0, 2);
-    const stat3Value = risingWorks.length > 0 ? risingWorks.length : (meta.new_today ?? "—");
-    return {
-        stats: [meta.total_works ?? "—", meta.new_today ?? "—", stat3Value],
-        stat3Label: risingWorks.length > 0 ? "📈 急上昇作品" : "✨ 新着作品",
-        stat3Sub: risingWorks.length > 0 ? "前日比10位以上上昇" : "本日発売",
-        ranking, rising: risingWorks, preorders: [], newTop3: [], randomNew: [],
-        showNewTop3: false, showRandomNew: false, graphData, updated: meta.updated || "",
-    };
-}
-
-function normalize(siteKey, rawData, meta, graphRaw) {
-    if (siteKey === "garu") return normalizeGaru(rawData);
-    if (siteKey === "stella") return normalizeStella(rawData);
-    if (siteKey === "poke") return normalizePoke(rawData, meta, graphRaw);
-    if (siteKey === "garucomm") return normalizeGaruComm(rawData, meta, graphRaw);
-    if (siteKey === "lovecul") return normalizeLovecul(rawData, meta, graphRaw);
-    return { stats: ["—","—","—"], ranking: [], rising: [], preorders: [], graphData: {}, updated: "" };
-}
-
-function esc(s) {
-    return String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
-}
-function rankBadgeClass(rank) { return rank===1?"r1":rank===2?"r2":rank===3?"r3":"rn"; }
-function thumbHtml(item) {
-    return item.img
-        ? `<img src="${esc(item.img)}" alt="" loading="lazy" onerror="this.outerHTML='<div class=&quot;no-thumb&quot;>🎧</div>'">`
-        : `<div class="no-thumb">🎧</div>`;
-}
-function tagsHtml(tags) {
-    if (!tags || !tags.length) return "";
-    const tagSpan = t => {
-        if (t==="がるまに独占") return `<span class="gtag" style="background:#fefce8;color:#854d0e;border-color:#fde047;font-weight:500">${esc(t)}</span>`;
-        if (t==="セール中") return `<span class="gtag" style="background:#f0fdf4;color:#166534;border-color:#86efac;font-weight:500">${esc(t)}</span>`;
-        return `<span class="gtag">${esc(t)}</span>`;
-    };
-    return `<div class="genres">${tags.map(tagSpan).join("")}</div>`;
-}
-function changeHtml(item) {
-    if (item.isNew) return `<span class="tnew">🆕 新着</span>`;
-    const c = item.rankChange;
-    if (c===null||c===undefined) return `<span class="tsm">－</span>`;
-    if (c>0) return `<span class="tup">▲${c}</span>`;
-    if (c<0) return `<span class="tdn">▼${Math.abs(c)}</span>`;
-    return `<span class="tsm">－</span>`;
-}
-function rankRow(item, canvasId) {
-    const rb = `<span class="rb ${rankBadgeClass(item.rank)}">${item.rank}</span>`;
-    const dateSpan = item.releaseDate ? `<span class="work-date">${esc(item.releaseDate)}</span>` : "";
-    return `<tr>
-        <td class="thumb-wrap"><span class="thumb-rank">${rb}</span><a href="${esc(item.url)}" target="_blank" rel="noopener">${thumbHtml(item)}</a></td>
-        <td class="title-cell">
-            <div class="work-title"><a href="${esc(item.url)}" target="_blank" rel="noopener">${esc(item.title)}</a></div>
-            <div class="work-circle">${dateSpan}${esc(item.circle||"")}</div>
-            ${tagsHtml(item.tags)}
-        </td>
-        <td style="font-size:11px;color:var(--accent-sub)">${esc(item.sub)}</td>
-        <td>${changeHtml(item)}</td>
-        <td class="chart-cell"><canvas id="${canvasId}" class="chart-wrap" data-id="${esc(item.id)}"></canvas></td>
-    </tr>`;
-}
-function risingRow(item, canvasId) {
-    const rb = `<span class="rb ${rankBadgeClass(item.rank)}">${item.rank}</span>`;
-    const dateSpan = item.releaseDate ? `<span class="work-date">${esc(item.releaseDate)}</span>` : "";
-    return `<tr>
-        <td class="thumb-wrap"><span class="thumb-rank">${rb}</span><a href="${esc(item.url)}" target="_blank" rel="noopener">${thumbHtml(item)}</a></td>
-        <td class="title-cell">
-            <div class="work-title"><a href="${esc(item.url)}" target="_blank" rel="noopener">${esc(item.title)}</a></div>
-            <div class="work-circle">${dateSpan}${esc(item.circle||"")}</div>
-            ${tagsHtml(item.tags)}
-        </td>
-        <td style="font-size:11px;color:var(--accent-sub)">${esc(item.sub)}</td>
-        <td><span class="rise-pill">▲${item.rise}位UP</span></td>
-        <td class="chart-cell"><canvas id="${canvasId}" class="chart-wrap" data-id="${esc(item.id)}"></canvas></td>
-    </tr>`;
-}
-function preorderRow(item, index) {
-    const rb = `<span class="rb rn">${index+1}</span>`;
-    const dateLine = item.streamDate ? `<span style="color:var(--accent-600);margin-right:6px">予約開始: ${esc(item.streamDate)}</span>` : "";
-    return `<tr>
-        <td class="thumb-wrap"><span class="thumb-rank">${rb}</span><a href="${esc(item.url)}" target="_blank" rel="noopener">${thumbHtml(item)}</a></td>
-        <td class="title-cell">
-            <div class="work-title"><a href="${esc(item.url)}" target="_blank" rel="noopener">${esc(item.title)}</a></div>
-            <div class="work-circle">${dateLine}${esc(item.circle||"")}</div>
-            ${tagsHtml(item.tags)}
-        </td>
-        <td style="font-size:11px;color:var(--accent-sub)">${esc(item.sub)}</td>
-        <td style="font-size:12px;color:var(--accent-800);font-weight:500">${esc(item.releaseDate||"")}</td>
-    </tr>`;
-}
-function newPickupRow(item, canvasId, isRandom) {
-    const rb = isRandom ? `<span class="rb rn" style="font-size:9px">NEW</span>` : `<span class="rb ${rankBadgeClass(item.rank)}">${item.rank}</span>`;
-    const dateSpan = item.releaseDate ? `<span class="work-date">${esc(item.releaseDate)}</span>` : "";
-    return `<tr>
-        <td class="thumb-wrap"><span class="thumb-rank">${rb}</span><a href="${esc(item.url)}" target="_blank" rel="noopener">${thumbHtml(item)}</a></td>
-        <td class="title-cell">
-            <div class="work-title"><a href="${esc(item.url)}" target="_blank" rel="noopener">${esc(item.title)}</a></div>
-            <div class="work-circle">${dateSpan}${esc(item.circle||"")}</div>
-            ${tagsHtml(item.tags)}
-        </td>
-        <td style="font-size:11px;color:var(--accent-sub)">${esc(item.sub)}</td>
-        <td><span class="tnew">🆕 新着</span></td>
-        <td class="chart-cell"><canvas id="${canvasId}" class="chart-wrap" data-id="${esc(item.id)}"></canvas></td>
-    </tr>`;
-}
-
-function renderPanel(siteKey, norm) {
-    const src = SOURCES[siteKey];
-    const top10 = norm.ranking.slice(0, 10);
-
-    let preorderSection = "";
-    if (norm.preorders && norm.preorders.length) {
-        preorderSection = `<div class="section">
-            <div class="section-head"><span style="font-size:16px">🔔</span><span class="section-title">近日配信予定</span><span class="section-badge">データあり・配信開始前</span></div>
-            <div class="table-card"><table>
-                <colgroup><col style="width:150px"><col style="width:auto"><col style="width:10%"><col style="width:12%"></colgroup>
-                <thead><tr><th></th><th>${siteKey==='poke'?'タイトル / 予約開始日 / ジャンル':'タイトル / 予約開始日 / サークル / ジャンル'}</th><th>声優</th><th>発売予定日</th></tr></thead>
-                <tbody>${norm.preorders.map((p,i)=>preorderRow(p,i)).join("")}</tbody>
-            </table></div>
-        </div>`;
+function renderPanel(siteKey,norm){
+    const src=SOURCES[siteKey],top10=norm.ranking.slice(0,10);
+    const statIcons=src.statIcons||["works","new","rising"];
+    function statCard(i,label,value,sub){
+        const ico=iconHtml(statIcons[i]);
+        return`<div class="stat-card">${ico}<div class="stat-text"><div class="stat-label">${label}</div><div class="stat-value">${esc(value)}</div>${sub?`<div class="stat-sub">${esc(sub)}</div>`:""}</div></div>`;
     }
-
-    let pickupSection = "";
-    if (norm.showRandomNew && norm.randomNew && norm.randomNew.length) {
-        pickupSection = `<div class="section">
-            <div class="section-head"><span style="font-size:16px">🎲</span><span class="section-title">本日の新着ピックアップ</span><span class="section-badge-new">ランダム1件</span></div>
-            <div class="table-card"><table>
-                <colgroup><col style="width:150px"><col style="width:auto"><col style="width:10%"><col style="width:8%"><col style="width:26%"></colgroup>
-                <thead><tr><th></th><th>タイトル / 発売日 / サークル / ジャンル</th><th>声優</th><th>新着</th><th class="chart-cell">推移グラフ</th></tr></thead>
-                <tbody>${norm.randomNew.map((r,i)=>newPickupRow(r,`${siteKey}_rn_${i+1}`,true)).join("")}</tbody>
-            </table></div>
-        </div>`;
-    } else if (norm.showNewTop3 && norm.newTop3 && norm.newTop3.length) {
-        pickupSection = `<div class="section">
-            <div class="section-head"><span style="font-size:16px">🆕</span><span class="section-title">新着作品</span><span class="section-badge-new">ランキング上位3件</span></div>
-            <div class="table-card"><table>
-                <colgroup><col style="width:150px"><col style="width:auto"><col style="width:10%"><col style="width:8%"><col style="width:26%"></colgroup>
-                <thead><tr><th></th><th>タイトル / 発売日 / サークル / ジャンル</th><th>声優</th><th>新着</th><th class="chart-cell">推移グラフ</th></tr></thead>
-                <tbody>${norm.newTop3.map((r,i)=>newPickupRow(r,`${siteKey}_nt_${i+1}`,false)).join("")}</tbody>
-            </table></div>
-        </div>`;
-    } else if (norm.rising && norm.rising.length) {
-        pickupSection = `<div class="section">
-            <div class="section-head"><span style="font-size:16px">🔥</span><span class="section-title">急上昇作品</span><span class="section-badge">前日比上昇</span></div>
-            <div class="table-card"><table>
-                <colgroup><col style="width:150px"><col style="width:auto"><col style="width:10%"><col style="width:8%"><col style="width:26%"></colgroup>
-                <thead><tr><th></th><th>タイトル / 発売日 / サークル / ジャンル</th><th>声優</th><th>上昇幅</th><th class="chart-cell">推移グラフ</th></tr></thead>
-                <tbody>${norm.rising.map((r,i)=>risingRow(r,`${siteKey}_rc_${i+1}`)).join("")}</tbody>
-            </table></div>
-        </div>`;
-    }
-
-    let exclusiveSection = "";
-    if (siteKey==="garucomm" && norm.exclusivePickup && norm.exclusivePickup.length) {
-        const rows = norm.exclusivePickup.map(it => {
-            const rb = `<span class="rb ${rankBadgeClass(it.rank)}">${it.rank}</span>`;
-            const dateSpan = it.releaseDate ? `<span class="work-date">${esc(it.releaseDate)}</span>` : "";
-            return `<tr>
-                <td class="thumb-wrap"><span class="thumb-rank">${rb}</span><a href="${esc(it.url)}" target="_blank" rel="noopener">${thumbHtml(it)}</a></td>
-                <td class="title-cell">
-                    <div class="work-title"><a href="${esc(it.url)}" target="_blank" rel="noopener">${esc(it.title)}</a></div>
-                    <div class="work-circle">${dateSpan}${esc(it.circle)}</div>
-                    ${tagsHtml(it.tags)}
-                </td>
-                <td style="font-size:11px;color:var(--accent-sub)">${esc(it.sub)}</td>
-                <td><span class="section-badge" style="background:#fdf4ff;color:#7e22ce;border-color:#d8b4fe">🔖 独占</span></td>
-            </tr>`;
-        }).join("");
-        exclusiveSection = `<div class="section">
-            <div class="section-head"><span style="font-size:16px">🔖</span><span class="section-title">がるまに独占 注目作品</span><span class="section-badge">独占配信</span></div>
-            <div class="table-card"><table>
-                <colgroup><col style="width:150px"><col style="width:auto"><col style="width:10%"><col style="width:10%"></colgroup>
-                <thead><tr><th></th><th>タイトル / 発売日 / ブランド / ジャンル</th><th>声優</th><th></th></tr></thead>
-                <tbody>${rows}</tbody>
-            </table></div>
-        </div>`;
-    }
-
-    const headerCol = siteKey==='poke'?'タイトル / 発売日 / ジャンル':siteKey==='garucomm'?'タイトル / 発売日 / ブランド / ジャンル':siteKey==='stella'?'タイトル / 発売日 / ブランド・サークル / ジャンル':'タイトル / 発売日 / サークル / ジャンル';
-    const rankingRows = top10.length ? top10.map((r,i)=>rankRow(r,`${siteKey}_wc_${i+1}`)).join("") : `<tr><td colspan="5" class="empty-msg">データがありません</td></tr>`;
-
+    let preorderSection="";
+    if(norm.preorders&&norm.preorders.length){preorderSection=`<div class="section"><div class="section-head"><span style="font-size:16px">🔔</span><span class="section-title">近日配信予定</span><span class="section-badge">データあり・配信開始前</span></div><div class="table-card"><table><colgroup><col style="width:150px"><col style="width:auto"><col style="width:10%"><col style="width:12%"></colgroup><thead><tr><th></th><th>${siteKey==='poke'?'タイトル / 予約開始日 / ジャンル':'タイトル / 予約開始日 / サークル / ジャンル'}</th><th>声優</th><th>発売予定日</th></tr></thead><tbody>${norm.preorders.map((p,i)=>preorderRow(p,i)).join("")}</tbody></table></div></div>`;}
+    let pickupSection="";
+    if(norm.showRandomNew&&norm.randomNew&&norm.randomNew.length){pickupSection=`<div class="section"><div class="section-head"><span style="font-size:16px">🎲</span><span class="section-title">本日の新着ピックアップ</span><span class="section-badge-new">ランダム1件</span></div><div class="table-card"><table><colgroup><col style="width:150px"><col style="width:auto"><col style="width:10%"><col style="width:8%"><col style="width:26%"></colgroup><thead><tr><th></th><th>タイトル / 発売日 / サークル / ジャンル</th><th>声優</th><th>新着</th><th class="chart-cell">推移グラフ</th></tr></thead><tbody>${norm.randomNew.map((r,i)=>newPickupRow(r,`${siteKey}_rn_${i+1}`,true)).join("")}</tbody></table></div></div>`;}
+    else if(norm.showNewTop3&&norm.newTop3&&norm.newTop3.length){pickupSection=`<div class="section"><div class="section-head"><span style="font-size:16px">🆕</span><span class="section-title">新着作品</span><span class="section-badge-new">ランキング上位3件</span></div><div class="table-card"><table><colgroup><col style="width:150px"><col style="width:auto"><col style="width:10%"><col style="width:8%"><col style="width:26%"></colgroup><thead><tr><th></th><th>タイトル / 発売日 / サークル / ジャンル</th><th>声優</th><th>新着</th><th class="chart-cell">推移グラフ</th></tr></thead><tbody>${norm.newTop3.map((r,i)=>newPickupRow(r,`${siteKey}_nt_${i+1}`,false)).join("")}</tbody></table></div></div>`;}
+    else if(norm.rising&&norm.rising.length){pickupSection=`<div class="section"><div class="section-head"><span style="font-size:16px">🔥</span><span class="section-title">急上昇作品</span><span class="section-badge">前日比上昇</span></div><div class="table-card"><table><colgroup><col style="width:150px"><col style="width:auto"><col style="width:10%"><col style="width:8%"><col style="width:26%"></colgroup><thead><tr><th></th><th>タイトル / 発売日 / サークル / ジャンル</th><th>声優</th><th>上昇幅</th><th class="chart-cell">推移グラフ</th></tr></thead><tbody>${norm.rising.map((r,i)=>risingRow(r,`${siteKey}_rc_${i+1}`)).join("")}</tbody></table></div></div>`;}
+    let exclusiveSection="";
+    if(siteKey==="garucomm"&&norm.exclusivePickup&&norm.exclusivePickup.length){const rows=norm.exclusivePickup.map(it=>{const rb=`<span class="rb ${rankBadgeClass(it.rank)}">${it.rank}</span>`;const ds=it.releaseDate?`<span class="work-date">${esc(it.releaseDate)}</span>`:"";return`<tr><td class="thumb-wrap"><span class="thumb-rank">${rb}</span><a href="${esc(it.url)}" target="_blank" rel="noopener">${thumbHtml(it)}</a></td><td class="title-cell"><div class="work-title"><a href="${esc(it.url)}" target="_blank" rel="noopener">${esc(it.title)}</a></div><div class="work-circle">${ds}${esc(it.circle)}</div>${tagsHtml(it.tags)}</td><td style="font-size:11px;color:var(--accent-sub)">${esc(it.sub)}</td><td><span class="section-badge" style="background:#fdf4ff;color:#7e22ce;border-color:#d8b4fe">🔖 独占</span></td></tr>`;}).join("");exclusiveSection=`<div class="section"><div class="section-head"><span style="font-size:16px">🔖</span><span class="section-title">がるまに独占 注目作品</span><span class="section-badge">独占配信</span></div><div class="table-card"><table><colgroup><col style="width:150px"><col style="width:auto"><col style="width:10%"><col style="width:10%"></colgroup><thead><tr><th></th><th>タイトル / 発売日 / ブランド / ジャンル</th><th>声優</th><th></th></tr></thead><tbody>${rows}</tbody></table></div></div>`;}
+    const hc=siteKey==='poke'?'タイトル / 発売日 / ジャンル':siteKey==='garucomm'?'タイトル / 発売日 / ブランド / ジャンル':siteKey==='stella'?'タイトル / 発売日 / ブランド・サークル / ジャンル':'タイトル / 発売日 / サークル / ジャンル';
+    const rankingRows=top10.length?top10.map((r,i)=>rankRow(r,`${siteKey}_wc_${i+1}`)).join(""):`<tr><td colspan="5" class="empty-msg">データがありません</td></tr>`;
     return `
     <div class="stat-row">
-        <div class="stat-card">
-            <div class="stat-label">${src.statLabels[0]}</div>
-            <div class="stat-value">${esc(norm.stats[0])}</div>
-            ${src.statSubs[0]?`<div class="stat-sub">${esc(src.statSubs[0])}</div>`:""}
-        </div>
-        <div class="stat-card">
-            <div class="stat-label">${src.statLabels[1]}</div>
-            <div class="stat-value">${esc(norm.stats[1])}</div>
-            ${norm.updated?`<div class="stat-sub">${esc(norm.updated)}</div>`:""}
-        </div>
-        <div class="stat-card">
-            <div class="stat-label">${norm.stat3Label??src.statLabels[2]}</div>
-            <div class="stat-value">${esc(norm.stats[2])}</div>
-            ${(norm.stat3Sub??src.statSubs[2])?`<div class="stat-sub">${esc(norm.stat3Sub??src.statSubs[2])}</div>`:""}
-        </div>
+        ${statCard(0,src.statLabels[0],norm.stats[0],src.statSubs[0])}
+        ${statCard(1,src.statLabels[1],norm.stats[1],norm.updated||null)}
+        ${statCard(2,norm.stat3Label??src.statLabels[2],norm.stats[2],norm.stat3Sub??src.statSubs[2])}
     </div>
     ${preorderSection}${pickupSection}${exclusiveSection}
     <div class="section">
         <div class="section-head"><span style="font-size:16px">🏆</span><span class="section-title">本日のランキング</span><span class="section-badge">TOP 10</span></div>
         <div class="table-card"><table>
             <colgroup><col style="width:150px"><col style="width:auto"><col style="width:10%"><col style="width:7%"><col style="width:26%"></colgroup>
-            <thead><tr><th></th><th>${headerCol}</th><th>声優</th><th>推移</th><th class="chart-cell">推移グラフ</th></tr></thead>
+            <thead><tr><th></th><th>${hc}</th><th>声優</th><th>推移</th><th class="chart-cell">推移グラフ</th></tr></thead>
             <tbody>${rankingRows}</tbody>
         </table></div>
     </div>`;
 }
 
-function drawChart(canvasId, itemId, graphData, accentHex) {
-    const ctx = document.getElementById(canvasId);
-    if (!ctx) return;
-    const d = graphData[itemId];
-    if (!d || !d.ranks || !d.ranks.length) { ctx.parentElement.innerHTML = '<span class="no-data">データ蓄積中</span>'; return; }
-    const disp = d.ranks.map(v => (v===null||v===undefined)?null:(v>14?15:v));
-    const isSingle = d.ranks.filter(v=>v!==null&&v!==undefined).length===1;
-    new Chart(ctx, {
-        type: 'line',
-        data: { labels: d.labels, datasets: [{ data: disp, borderColor: accentHex, backgroundColor: 'transparent', borderWidth: 1.5, pointRadius: isSingle?5:2, pointHoverRadius: 6, pointBackgroundColor: accentHex, fill: false, tension: 0.4, spanGaps: false }] },
-        options: {
-            responsive: true, maintainAspectRatio: false,
-            layout: { padding: { top: 6, left: 2 } },
-            interaction: { mode: 'index', intersect: false },
-            scales: {
-                y: { reverse: true, min: -1, max: 17,
-                    ticks: { font:{size:11}, color:'#8a8077', callback: v=>v===1?'1位':v===5?'5位':v===10?'10位':v===15?'圏外':null },
-                    beforeFit: axis => { axis.ticks=[{value:1,label:'1位'},{value:5,label:'5位'},{value:10,label:'10位'},{value:15,label:'圏外'}]; },
-                    grid:{color:'rgba(0,0,0,0.05)'}, border:{display:false} },
-                x: { ticks:{font:{size:9},color:'#8a8077',maxTicksLimit:4}, grid:{display:false}, border:{display:false} }
-            },
-            plugins: {
-                legend:{display:false},
-                tooltip: { callbacks: { label: c=>{ const raw=d.ranks[c.dataIndex]; if(raw===null||raw===undefined)return''; return raw>30?'圏外':raw+'位'; } }, titleFont:{size:11}, bodyFont:{size:12}, padding:8 }
-            }
-        }
-    });
+function drawChart(canvasId,itemId,graphData,accentHex){
+    const ctx=document.getElementById(canvasId);if(!ctx)return;
+    const d=graphData[itemId];if(!d||!d.ranks||!d.ranks.length){ctx.parentElement.innerHTML='<span class="no-data">データ蓄積中</span>';return;}
+    const disp=d.ranks.map(v=>(v===null||v===undefined)?null:(v>14?15:v));
+    const isSingle=d.ranks.filter(v=>v!==null&&v!==undefined).length===1;
+    new Chart(ctx,{type:'line',data:{labels:d.labels,datasets:[{data:disp,borderColor:accentHex,backgroundColor:'transparent',borderWidth:1.5,pointRadius:isSingle?5:2,pointHoverRadius:6,pointBackgroundColor:accentHex,fill:false,tension:0.4,spanGaps:false}]},options:{responsive:true,maintainAspectRatio:false,layout:{padding:{top:6,left:2}},interaction:{mode:'index',intersect:false},scales:{y:{reverse:true,min:-1,max:17,ticks:{font:{size:11},color:'#8a8077',callback:v=>v===1?'1位':v===5?'5位':v===10?'10位':v===15?'圏外':null},beforeFit:axis=>{axis.ticks=[{value:1,label:'1位'},{value:5,label:'5位'},{value:10,label:'10位'},{value:15,label:'圏外'}];},grid:{color:'rgba(0,0,0,0.05)'},border:{display:false}},x:{ticks:{font:{size:9},color:'#8a8077',maxTicksLimit:4},grid:{display:false},border:{display:false}}},plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>{const raw=d.ranks[c.dataIndex];if(raw===null||raw===undefined)return'';return raw>30?'圏外':raw+'位';}},titleFont:{size:11},bodyFont:{size:12},padding:8}}}});
 }
 
-const ACCENT_HEX = { garu:'#d4386f', stella:'#b8860b', poke:'#4361c2', garucomm:'#c9439e', lovecul:'#2d8a5e' };
-const panelsEl = document.getElementById("panels");
-const tabsEl = document.getElementById("site-tabs");
+const ACCENT_HEX={garu:'#d4386f',stella:'#b8860b',poke:'#4361c2',garucomm:'#c9439e',lovecul:'#2d8a5e'};
+const panelsEl=document.getElementById("panels"),tabsEl=document.getElementById("site-tabs");
 
-function showLoading(siteKey) {
-    panelsEl.innerHTML = `<div class="loading-msg">${esc(SOURCES[siteKey].label)} を読み込み中...</div>`;
+function showLoading(k){panelsEl.innerHTML=`<div class="loading-msg">${esc(SOURCES[k].label)} を読み込み中...</div>`;}
+function showError(k,err){panelsEl.innerHTML=`<div class="error-msg">${esc(SOURCES[k].label)} のデータ取得に失敗しました。<br><span style="font-size:10px;opacity:.7">${esc(err.message||err)}</span></div>`;}
+async function fetchJsonSafe(url){if(!url)return null;try{const r=await fetch(url,{mode:"cors"});if(!r.ok)return null;return await r.json();}catch(e){return null;}}
+async function loadSite(k){
+    if(cache[k]){renderAndMount(k,cache[k]);return;}
+    showLoading(k);
+    try{
+        const res=await fetch(SOURCES[k].url,{mode:"cors"});
+        if(!res.ok)throw new Error(`HTTP ${res.status}`);
+        const raw=await res.json();
+        const[meta,graphRaw]=await Promise.all([fetchJsonSafe(SOURCES[k].metaUrl),fetchJsonSafe(SOURCES[k].graphUrl)]);
+        const norm=normalize(k,raw,meta,graphRaw);
+        cache[k]=norm;renderAndMount(k,norm);
+    }catch(err){showError(k,err);}
 }
-function showError(siteKey, err) {
-    panelsEl.innerHTML = `<div class="error-msg">${esc(SOURCES[siteKey].label)} のデータ取得に失敗しました。<br><span style="font-size:10px;opacity:.7">${esc(err.message||err)}</span></div>`;
-}
-async function fetchJsonSafe(url) {
-    if (!url) return null;
-    try { const res = await fetch(url,{mode:"cors"}); if(!res.ok)return null; return await res.json(); } catch(e){return null;}
-}
-async function loadSite(siteKey) {
-    if (cache[siteKey]) { renderAndMount(siteKey, cache[siteKey]); return; }
-    showLoading(siteKey);
-    try {
-        const res = await fetch(SOURCES[siteKey].url,{mode:"cors"});
-        if (!res.ok) throw new Error(`HTTP ${res.status}`);
-        const raw = await res.json();
-        const [meta, graphRaw] = await Promise.all([fetchJsonSafe(SOURCES[siteKey].metaUrl), fetchJsonSafe(SOURCES[siteKey].graphUrl)]);
-        const norm = normalize(siteKey, raw, meta, graphRaw);
-        cache[siteKey] = norm;
-        renderAndMount(siteKey, norm);
-    } catch(err) { showError(siteKey, err); }
-}
-function updateHeaderDate(norm) {
-    const el = document.getElementById("hub-update");
-    if (!el) return;
-    el.textContent = norm.updated ? `🔄 毎日更新 ／ 最終更新：${norm.updated}` : `🔄 毎日更新 ／ ―`;
-}
-function renderAndMount(siteKey, norm) {
+function updateHeaderDate(norm){const el=document.getElementById("hub-update");if(!el)return;el.textContent=norm.updated?`🔄 毎日更新 ／ 最終更新：${norm.updated}`:`🔄 毎日更新 ／ ―`;}
+function renderAndMount(k,norm){
     updateHeaderDate(norm);
-    const wrapper = document.createElement("div");
-    wrapper.className = `site-panel active ${SOURCES[siteKey].accentClass}`;
-    wrapper.innerHTML = renderPanel(siteKey, norm);
-    panelsEl.innerHTML = "";
-    panelsEl.appendChild(wrapper);
-    const accent = ACCENT_HEX[siteKey];
-    wrapper.querySelectorAll('canvas[data-id]').forEach(c => drawChart(c.id, c.dataset.id, norm.graphData, accent));
+    const wrapper=document.createElement("div");
+    wrapper.className=`site-panel active ${SOURCES[k].accentClass}`;
+    wrapper.innerHTML=renderPanel(k,norm);
+    panelsEl.innerHTML="";panelsEl.appendChild(wrapper);
+    const accent=ACCENT_HEX[k];
+    wrapper.querySelectorAll('canvas[data-id]').forEach(c=>drawChart(c.id,c.dataset.id,norm.graphData,accent));
 }
-tabsEl.addEventListener("click", e => {
-    const btn = e.target.closest(".site-tab");
-    if (!btn) return;
-    document.querySelectorAll(".site-tab").forEach(t => t.classList.remove("active"));
-    btn.classList.add("active");
-    loadSite(btn.dataset.site);
+tabsEl.addEventListener("click",e=>{
+    const btn=e.target.closest(".site-tab");if(!btn)return;
+    document.querySelectorAll(".site-tab").forEach(t=>t.classList.remove("active"));
+    btn.classList.add("active");loadSite(btn.dataset.site);
 });
 loadSite("garu");
 </script>
