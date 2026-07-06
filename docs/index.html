@@ -43,20 +43,20 @@ body{font-family:'Noto Sans JP',sans-serif;background:var(--bg);color:var(--ink)
 
 /* 統計カード */
 .stat-row{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:20px}
-.stat-card{background:#fff;border:0.5px solid var(--border);border-radius:14px;padding:14px 16px;display:flex;align-items:flex-start;gap:12px}
-.stat-icon-wrap{flex:none;display:flex;align-items:center;justify-content:center}
-.stat-text{flex:1;min-width:0}
+.stat-card{background:#fff;border:0.5px solid var(--border);border-radius:14px;padding:14px 16px;position:relative;}
+.stat-icon-wrap{position:absolute;top:12px;right:12px;}
+.stat-text{width:100%}
 .stat-label{font-size:11px;color:var(--muted);margin-bottom:6px}
 .stat-value{font-family:'Noto Serif JP',serif;font-size:26px;font-weight:500;color:var(--accent-800)}
 .stat-sub{font-size:10px;color:var(--muted);margin-top:3px}
 
 /* 3aアイコン：プラム円＋金ラインアイコン */
-.icon-3a{width:36px;height:36px;border-radius:50%;background:var(--plum-dark);display:flex;align-items:center;justify-content:center;flex:none}
-.icon-3a svg{width:18px;height:18px}
+.icon-3a{width:22px;height:22px;border-radius:50%;background:var(--plum-dark);display:flex;align-items:center;justify-content:center;flex:none}
+.icon-3a svg{width:12px;height:12px}
 
 /* 3cアイコン：円なし、金色ラインのみ */
-.icon-3c{width:28px;height:28px;display:flex;align-items:center;justify-content:center;flex:none}
-.icon-3c svg{width:22px;height:22px}
+.icon-3c{width:22px;height:22px;display:flex;align-items:center;justify-content:center;flex:none}
+.icon-3c svg{width:16px;height:16px}
 
 /* アイコンモード切り替え */
 body.mode-3a .stat-card{gap:12px}
@@ -215,6 +215,11 @@ function setMode(mode) {
   }
 }
 
+function sectionIconHtml(pathContent) {
+  const stroke = currentMode === '3a' ? '#e3c081' : '#c79a4a';
+  return `<span style="display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;flex:none"><svg viewBox="0 0 24 24" fill="none" stroke="${stroke}" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="18" height="18">${pathContent}</svg></span>`;
+}
+
 function iconHtml(type) {
   if (currentMode === 'none') return '';
   const svg = ICONS[type]?.[currentMode] || '';
@@ -296,13 +301,13 @@ function renderPanel(siteKey,norm){
         return`<div class="stat-card">${ico}<div class="stat-text"><div class="stat-label">${label}</div><div class="stat-value">${esc(value)}</div>${sub?`<div class="stat-sub">${esc(sub)}</div>`:""}</div></div>`;
     }
     let preorderSection="";
-    if(norm.preorders&&norm.preorders.length){preorderSection=`<div class="section"><div class="section-head"><span style="font-size:16px">🔔</span><span class="section-title">近日配信予定</span><span class="section-badge">データあり・配信開始前</span></div><div class="table-card"><table><colgroup><col style="width:150px"><col style="width:auto"><col style="width:10%"><col style="width:12%"></colgroup><thead><tr><th></th><th>${siteKey==='poke'?'タイトル / 予約開始日 / ジャンル':'タイトル / 予約開始日 / サークル / ジャンル'}</th><th>声優</th><th>発売予定日</th></tr></thead><tbody>${norm.preorders.map((p,i)=>preorderRow(p,i)).join("")}</tbody></table></div></div>`;}
+    if(norm.preorders&&norm.preorders.length){preorderSection=`<div class="section"><div class="section-head">${sectionIconHtml('<path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/>')}<span class="section-title">近日配信予定</span><span class="section-badge">データあり・配信開始前</span></div><div class="table-card"><table><colgroup><col style="width:150px"><col style="width:auto"><col style="width:10%"><col style="width:12%"></colgroup><thead><tr><th></th><th>${siteKey==='poke'?'タイトル / 予約開始日 / ジャンル':'タイトル / 予約開始日 / サークル / ジャンル'}</th><th>声優</th><th>発売予定日</th></tr></thead><tbody>${norm.preorders.map((p,i)=>preorderRow(p,i)).join("")}</tbody></table></div></div>`;}
     let pickupSection="";
-    if(norm.showRandomNew&&norm.randomNew&&norm.randomNew.length){pickupSection=`<div class="section"><div class="section-head"><span style="font-size:16px">🎲</span><span class="section-title">本日の新着ピックアップ</span><span class="section-badge-new">ランダム1件</span></div><div class="table-card"><table><colgroup><col style="width:150px"><col style="width:auto"><col style="width:10%"><col style="width:8%"><col style="width:26%"></colgroup><thead><tr><th></th><th>タイトル / 発売日 / サークル / ジャンル</th><th>声優</th><th>新着</th><th class="chart-cell">推移グラフ</th></tr></thead><tbody>${norm.randomNew.map((r,i)=>newPickupRow(r,`${siteKey}_rn_${i+1}`,true)).join("")}</tbody></table></div></div>`;}
-    else if(norm.showNewTop3&&norm.newTop3&&norm.newTop3.length){pickupSection=`<div class="section"><div class="section-head"><span style="font-size:16px">🆕</span><span class="section-title">新着作品</span><span class="section-badge-new">ランキング上位3件</span></div><div class="table-card"><table><colgroup><col style="width:150px"><col style="width:auto"><col style="width:10%"><col style="width:8%"><col style="width:26%"></colgroup><thead><tr><th></th><th>タイトル / 発売日 / サークル / ジャンル</th><th>声優</th><th>新着</th><th class="chart-cell">推移グラフ</th></tr></thead><tbody>${norm.newTop3.map((r,i)=>newPickupRow(r,`${siteKey}_nt_${i+1}`,false)).join("")}</tbody></table></div></div>`;}
-    else if(norm.rising&&norm.rising.length){pickupSection=`<div class="section"><div class="section-head"><span style="font-size:16px">🔥</span><span class="section-title">急上昇作品</span><span class="section-badge">前日比上昇</span></div><div class="table-card"><table><colgroup><col style="width:150px"><col style="width:auto"><col style="width:10%"><col style="width:8%"><col style="width:26%"></colgroup><thead><tr><th></th><th>タイトル / 発売日 / サークル / ジャンル</th><th>声優</th><th>上昇幅</th><th class="chart-cell">推移グラフ</th></tr></thead><tbody>${norm.rising.map((r,i)=>risingRow(r,`${siteKey}_rc_${i+1}`)).join("")}</tbody></table></div></div>`;}
+    if(norm.showRandomNew&&norm.randomNew&&norm.randomNew.length){pickupSection=`<div class="section"><div class="section-head">${sectionIconHtml('<polyline points="16 3 21 3 21 8"/><line x1="4" y1="20" x2="21" y2="3"/><polyline points="21 16 21 21 16 21"/><line x1="15" y1="15" x2="21" y2="21"/>')}<span class="section-title">本日の新着ピックアップ</span><span class="section-badge-new">ランダム1件</span></div><div class="table-card"><table><colgroup><col style="width:150px"><col style="width:auto"><col style="width:10%"><col style="width:8%"><col style="width:26%"></colgroup><thead><tr><th></th><th>タイトル / 発売日 / サークル / ジャンル</th><th>声優</th><th>新着</th><th class="chart-cell">推移グラフ</th></tr></thead><tbody>${norm.randomNew.map((r,i)=>newPickupRow(r,`${siteKey}_rn_${i+1}`,true)).join("")}</tbody></table></div></div>`;}
+    else if(norm.showNewTop3&&norm.newTop3&&norm.newTop3.length){pickupSection=`<div class="section"><div class="section-head">${sectionIconHtml('<polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>')}<span class="section-title">新着作品</span><span class="section-badge-new">ランキング上位3件</span></div><div class="table-card"><table><colgroup><col style="width:150px"><col style="width:auto"><col style="width:10%"><col style="width:8%"><col style="width:26%"></colgroup><thead><tr><th></th><th>タイトル / 発売日 / サークル / ジャンル</th><th>声優</th><th>新着</th><th class="chart-cell">推移グラフ</th></tr></thead><tbody>${norm.newTop3.map((r,i)=>newPickupRow(r,`${siteKey}_nt_${i+1}`,false)).join("")}</tbody></table></div></div>`;}
+    else if(norm.rising&&norm.rising.length){pickupSection=`<div class="section"><div class="section-head">${sectionIconHtml('<polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/>')}<span class="section-title">急上昇作品</span><span class="section-badge">前日比上昇</span></div><div class="table-card"><table><colgroup><col style="width:150px"><col style="width:auto"><col style="width:10%"><col style="width:8%"><col style="width:26%"></colgroup><thead><tr><th></th><th>タイトル / 発売日 / サークル / ジャンル</th><th>声優</th><th>上昇幅</th><th class="chart-cell">推移グラフ</th></tr></thead><tbody>${norm.rising.map((r,i)=>risingRow(r,`${siteKey}_rc_${i+1}`)).join("")}</tbody></table></div></div>`;}
     let exclusiveSection="";
-    if(siteKey==="garucomm"&&norm.exclusivePickup&&norm.exclusivePickup.length){const rows=norm.exclusivePickup.map(it=>{const rb=`<span class="rb ${rankBadgeClass(it.rank)}">${it.rank}</span>`;const ds=it.releaseDate?`<span class="work-date">${esc(it.releaseDate)}</span>`:"";return`<tr><td class="thumb-wrap"><span class="thumb-rank">${rb}</span><a href="${esc(it.url)}" target="_blank" rel="noopener">${thumbHtml(it)}</a></td><td class="title-cell"><div class="work-title"><a href="${esc(it.url)}" target="_blank" rel="noopener">${esc(it.title)}</a></div><div class="work-circle">${ds}${esc(it.circle)}</div>${tagsHtml(it.tags)}</td><td style="font-size:11px;color:var(--accent-sub)">${esc(it.sub)}</td><td><span class="section-badge" style="background:#fdf4ff;color:#7e22ce;border-color:#d8b4fe">🔖 独占</span></td></tr>`;}).join("");exclusiveSection=`<div class="section"><div class="section-head"><span style="font-size:16px">🔖</span><span class="section-title">がるまに独占 注目作品</span><span class="section-badge">独占配信</span></div><div class="table-card"><table><colgroup><col style="width:150px"><col style="width:auto"><col style="width:10%"><col style="width:10%"></colgroup><thead><tr><th></th><th>タイトル / 発売日 / ブランド / ジャンル</th><th>声優</th><th></th></tr></thead><tbody>${rows}</tbody></table></div></div>`;}
+    if(siteKey==="garucomm"&&norm.exclusivePickup&&norm.exclusivePickup.length){const rows=norm.exclusivePickup.map(it=>{const rb=`<span class="rb ${rankBadgeClass(it.rank)}">${it.rank}</span>`;const ds=it.releaseDate?`<span class="work-date">${esc(it.releaseDate)}</span>`:"";return`<tr><td class="thumb-wrap"><span class="thumb-rank">${rb}</span><a href="${esc(it.url)}" target="_blank" rel="noopener">${thumbHtml(it)}</a></td><td class="title-cell"><div class="work-title"><a href="${esc(it.url)}" target="_blank" rel="noopener">${esc(it.title)}</a></div><div class="work-circle">${ds}${esc(it.circle)}</div>${tagsHtml(it.tags)}</td><td style="font-size:11px;color:var(--accent-sub)">${esc(it.sub)}</td><td><span class="section-badge" style="background:#fdf4ff;color:#7e22ce;border-color:#d8b4fe">🔖 独占</span></td></tr>`;}).join("");exclusiveSection=`<div class="section"><div class="section-head">${sectionIconHtml('<path d="M20.59 13.41l-7.17 7.17a2 2 0 01-2.83 0L2 12V2h10l8.59 8.59a2 2 0 010 2.82z"/><circle cx="7" cy="7" r="1.5" fill="#c79a4a"/>')}<span class="section-title">がるまに独占 注目作品</span><span class="section-badge">独占配信</span></div><div class="table-card"><table><colgroup><col style="width:150px"><col style="width:auto"><col style="width:10%"><col style="width:10%"></colgroup><thead><tr><th></th><th>タイトル / 発売日 / ブランド / ジャンル</th><th>声優</th><th></th></tr></thead><tbody>${rows}</tbody></table></div></div>`;}
     const hc=siteKey==='poke'?'タイトル / 発売日 / ジャンル':siteKey==='garucomm'?'タイトル / 発売日 / ブランド / ジャンル':siteKey==='stella'?'タイトル / 発売日 / ブランド・サークル / ジャンル':'タイトル / 発売日 / サークル / ジャンル';
     const rankingRows=top10.length?top10.map((r,i)=>rankRow(r,`${siteKey}_wc_${i+1}`)).join(""):`<tr><td colspan="5" class="empty-msg">データがありません</td></tr>`;
     return `
@@ -313,7 +318,7 @@ function renderPanel(siteKey,norm){
     </div>
     ${preorderSection}${pickupSection}${exclusiveSection}
     <div class="section">
-        <div class="section-head"><span style="font-size:16px">🏆</span><span class="section-title">本日のランキング</span><span class="section-badge">TOP 10</span></div>
+        <div class="section-head">${sectionIconHtml('<path d="M2 20h20M4 20l2-10 6 6 6-6 2 10"/>')}<span class="section-title">本日のランキング</span><span class="section-badge">TOP 10</span></div>
         <div class="table-card"><table>
             <colgroup><col style="width:150px"><col style="width:auto"><col style="width:10%"><col style="width:7%"><col style="width:26%"></colgroup>
             <thead><tr><th></th><th>${hc}</th><th>声優</th><th>推移</th><th class="chart-cell">推移グラフ</th></tr></thead>
