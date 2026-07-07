@@ -43,25 +43,21 @@ body{font-family:'Noto Sans JP',sans-serif;background:var(--bg);color:var(--ink)
 
 /* 統計カード */
 .stat-row{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:20px}
-.stat-card{background:#fff;border:0.5px solid var(--border);border-radius:14px;padding:14px 16px;display:flex;align-items:flex-start;gap:10px;}
-.stat-icon-wrap{flex:none;margin-top:2px;}
-.stat-text{flex:1;min-width:0;text-align:left;}
+.stat-card{background:#fff;border:0.5px solid var(--border);border-radius:14px;padding:14px 16px;}
 .stat-label{font-size:11px;color:var(--muted);margin-bottom:6px}
 .stat-value{font-family:'Noto Serif JP',serif;font-size:26px;font-weight:500;color:var(--accent-800)}
 .stat-sub{font-size:10px;color:var(--muted);margin-top:3px}
 
 /* 3aアイコン：プラム円＋金ラインアイコン */
-.icon-3a{width:22px;height:22px;border-radius:50%;background:var(--plum-dark);display:flex;align-items:center;justify-content:center;flex:none;margin-top:1px}
-.icon-3a svg{width:12px;height:12px}
+.icon-3a{width:16px;height:16px;border-radius:50%;background:var(--plum-dark);display:inline-flex;align-items:center;justify-content:center;flex:none;}
+.icon-3a svg{width:9px;height:9px;}
 
 /* 3cアイコン：円なし、金色ラインのみ */
-.icon-3c{width:20px;height:20px;display:flex;align-items:center;justify-content:center;flex:none;margin-top:1px}
-.icon-3c svg{width:16px;height:16px}
+.icon-3c{width:16px;height:16px;display:inline-flex;align-items:center;justify-content:center;flex:none;}
+.icon-3c svg{width:14px;height:14px;}
 
 /* アイコンモード切り替え */
-body.mode-3a .stat-card{gap:12px}
-body.mode-3c .stat-card{gap:8px}
-body.mode-none .stat-icon-wrap{display:none}
+body.mode-none .icon-3a,body.mode-none .icon-3c{display:none}
 
 .section{margin-bottom:28px}
 .section-head{display:flex;align-items:center;gap:8px;margin-bottom:12px}
@@ -224,10 +220,10 @@ function sectionIconHtml(path) {
 }
 
 function iconHtml(type) {
-  if (currentMode === 'none') return '';
   const svg = ICONS[type]?.[currentMode] || '';
+  if (!svg) return '';
   const cls = currentMode === '3a' ? 'icon-3a' : 'icon-3c';
-  return `<div class="stat-icon-wrap"><div class="${cls}">${svg}</div></div>`;
+  return `<span class="${cls}">${svg}</span>`;
 }
 
 const SOURCES = {
@@ -301,7 +297,8 @@ function renderPanel(siteKey,norm){
     const statIcons=src.statIcons||["works","new","rising"];
     function statCard(i,label,value,sub){
         const ico=iconHtml(statIcons[i]);
-        return`<div class="stat-card">${ico}<div class="stat-text"><div class="stat-label">${label}</div><div class="stat-value">${esc(value)}</div>${sub?`<div class="stat-sub">${esc(sub)}</div>`:""}</div></div>`;
+        const labelHtml=ico?`<div class="stat-label" style="display:flex;align-items:center;gap:5px;">${ico}${label}</div>`:`<div class="stat-label">${label}</div>`;
+        return`<div class="stat-card">${labelHtml}<div class="stat-value">${esc(value)}</div>${sub?`<div class="stat-sub">${esc(sub)}</div>`:""}</div>`;
     }
     let preorderSection="";
     if(norm.preorders&&norm.preorders.length){preorderSection=`<div class="section"><div class="section-head">${sectionIconHtml('<circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>')}<span class="section-title">近日配信予定</span><span class="section-badge">データあり・配信開始前</span></div><div class="table-card"><table><colgroup><col style="width:150px"><col style="width:auto"><col style="width:10%"><col style="width:12%"></colgroup><thead><tr><th></th><th>${siteKey==='poke'?'タイトル / 予約開始日 / ジャンル':'タイトル / 予約開始日 / サークル / ジャンル'}</th><th>声優</th><th>発売予定日</th></tr></thead><tbody>${norm.preorders.map((p,i)=>preorderRow(p,i)).join("")}</tbody></table></div></div>`;}
