@@ -89,7 +89,8 @@ tbody tr:hover td{background:var(--accent-50)}
 .empty-msg{text-align:center;padding:24px;color:var(--muted);font-size:12px}
 .loading-msg{text-align:center;padding:40px;color:var(--muted);font-size:13px}
 .error-msg{text-align:center;padding:24px;color:#9a3412;font-size:12px;background:#fff7ed;border-radius:12px}
-.hub-footer{text-align:center;margin-top:40px;font-size:11px;padding-top:20px;border-top:0.5px solid var(--border-light);font-family:'Noto Serif JP',serif;line-height:1.7;color:#c2a4bc}
+.hub-footer{display:flex;justify-content:center;margin-top:40px;padding-top:20px;border-top:0.5px solid var(--border-light)}
+.hub-footer-inner{font-size:11px;color:#c2a4bc;font-family:'Noto Serif JP',serif;line-height:2;text-align:left}
 
 @media(max-width:640px){
     .hub-wrap{padding:12px 8px 40px}
@@ -143,9 +144,11 @@ tbody tr:hover td{background:var(--accent-50)}
 
 <div id="panels"></div>
 
-<div class="hub-footer">
-  各サイトのデータを直接取得して表示しています。<br>更新頻度は各サイトの仕様に準じます。
-</div>
+<div class="hub-footer"><div class="hub-footer-inner">
+    ※ 紹介作品には成人向けコンテンツが含まれます<br>
+    ※ ランキングデータは各サービスより取得しており、内容の正確性を保証するものではありません<br>
+    ※ 本サイトはアフィリエイトプログラムを利用しています
+</div></div>
 </div>
 
 <script>
