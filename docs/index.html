@@ -22,10 +22,6 @@
 body{font-family:'Noto Sans JP',sans-serif;background:var(--bg);color:var(--ink);min-height:100vh}
 .hub-wrap{max-width:1200px;margin:0 auto;padding:32px 16px 60px}
 
-/* アイコン切り替えバー */
-.icon-switcher{display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:16px;font-size:11px;color:var(--muted)}
-.icon-switcher button{padding:5px 14px;border-radius:20px;border:0.5px solid var(--border);background:#fff;font-size:11px;font-family:'Noto Sans JP',sans-serif;cursor:pointer;color:var(--muted);transition:all .15s}
-.icon-switcher button.active{background:var(--plum-dark);color:var(--gold);border-color:var(--plum-dark)}
 
 .hub-card{border-radius:18px 18px 0 0;overflow:hidden;box-shadow:0 20px 50px rgba(60,36,64,.18);margin-bottom:0}
 .hub-header{background:linear-gradient(160deg,var(--plum-dark) 0%,var(--plum) 55%,var(--plum-dark) 100%);padding:32px 28px 26px;text-align:center}
@@ -48,16 +44,9 @@ body{font-family:'Noto Sans JP',sans-serif;background:var(--bg);color:var(--ink)
 .stat-value{font-family:'Noto Serif JP',serif;font-size:26px;font-weight:500;color:var(--accent-800)}
 .stat-sub{font-size:10px;color:var(--muted);margin-top:3px}
 
-/* 3aアイコン：プラム円＋金ラインアイコン */
-.icon-3a{width:16px;height:16px;border-radius:50%;background:var(--plum-dark);display:inline-flex;align-items:center;justify-content:center;flex:none;}
-.icon-3a svg{width:9px;height:9px;}
-
-/* 3cアイコン：円なし、金色ラインのみ */
+/* 統計カードアイコン */
 .icon-3c{width:16px;height:16px;display:inline-flex;align-items:center;justify-content:center;flex:none;}
 .icon-3c svg{width:14px;height:14px;}
-
-/* アイコンモード切り替え */
-body.mode-none .icon-3a,body.mode-none .icon-3c{display:none}
 
 .section{margin-bottom:28px}
 .section-head{display:flex;align-items:center;gap:8px;margin-bottom:12px}
@@ -130,16 +119,9 @@ tbody tr:hover td{background:var(--accent-50)}
 }
 </style>
 </head>
-<body class="mode-3a">
+<body>
 <div class="hub-wrap">
 
-<!-- アイコン切り替え -->
-<div class="icon-switcher">
-  <span>アイコン案：</span>
-  <button class="active" onclick="setMode('3a')">3a（プラム円＋金）</button>
-  <button onclick="setMode('3c')">3c（金ラインのみ）</button>
-  <button onclick="setMode('none')">なし（現行）</button>
-</div>
 
 <div class="hub-card">
   <div class="hub-header">
@@ -169,60 +151,23 @@ tbody tr:hover td{background:var(--accent-50)}
 <script>
 /* ---- SVGアイコン定義 ---- */
 const ICONS = {
-  works: {
-    '3a': `<svg viewBox="0 0 24 24" fill="none" stroke="#e3c081" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="3"/><line x1="7" y1="8" x2="17" y2="8"/><line x1="7" y1="12" x2="17" y2="12"/><line x1="7" y1="16" x2="13" y2="16"/></svg>`,
-    '3c': `<svg viewBox="0 0 24 24" fill="none" stroke="#c79a4a" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="3"/><line x1="7" y1="8" x2="17" y2="8"/><line x1="7" y1="12" x2="17" y2="12"/><line x1="7" y1="16" x2="13" y2="16"/></svg>`,
-  },
-  new: {
-    '3a': `<svg viewBox="0 0 24 24" fill="none" stroke="#e3c081" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 L13.5 10.5 L22 12 L13.5 13.5 L12 22 L10.5 13.5 L2 12 L10.5 10.5 Z"/></svg>`,
-    '3c': `<svg viewBox="0 0 24 24" fill="none" stroke="#c79a4a" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 L13.5 10.5 L22 12 L13.5 13.5 L12 22 L10.5 13.5 L2 12 L10.5 10.5 Z"/></svg>`,
-  },
-  rising: {
-    '3a': `<svg viewBox="0 0 24 24" fill="none" stroke="#e3c081" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>`,
-    '3c': `<svg viewBox="0 0 24 24" fill="none" stroke="#c79a4a" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>`,
-  },
-  ranking: {
-    '3a': `<svg viewBox="0 0 24 24" fill="none" stroke="#e3c081" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 4l3 12h14l3-12-6 7-4-7-4 7-6-7z"/><path d="M5 20h14"/></svg>`,
-    '3c': `<svg viewBox="0 0 24 24" fill="none" stroke="#c79a4a" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M2 4l3 12h14l3-12-6 7-4-7-4 7-6-7z"/><path d="M5 20h14"/></svg>`,
-  },
-  exclusive: {
-    '3a': `<svg viewBox="0 0 24 24" fill="none" stroke="#e3c081" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.5 8.5 23 9.5 17.5 15 19 22 12 18.5 5 22 6.5 15 1 9.5 8.5 8.5 12 2"/></svg>`,
-    '3c': `<svg viewBox="0 0 24 24" fill="none" stroke="#c79a4a" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.5 8.5 23 9.5 17.5 15 19 22 12 18.5 5 22 6.5 15 1 9.5 8.5 8.5 12 2"/></svg>`,
-  },
-  preorder: {
-    '3a': `<svg viewBox="0 0 24 24" fill="none" stroke="#e3c081" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>`,
-    '3c': `<svg viewBox="0 0 24 24" fill="none" stroke="#c79a4a" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>`,
-  },
+  works: `<svg viewBox="0 0 24 24" fill="none" stroke="#c79a4a" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="3"/><line x1="7" y1="8" x2="17" y2="8"/><line x1="7" y1="12" x2="17" y2="12"/><line x1="7" y1="16" x2="13" y2="16"/></svg>`,
+  new:   `<svg viewBox="0 0 24 24" fill="none" stroke="#c79a4a" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 L13.5 10.5 L22 12 L13.5 13.5 L12 22 L10.5 13.5 L2 12 L10.5 10.5 Z"/></svg>`,
+  rising: `<svg viewBox="0 0 24 24" fill="none" stroke="#c79a4a" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>`,
+  ranking: `<svg viewBox="0 0 24 24" fill="none" stroke="#c79a4a" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M2 4l3 12h14l3-12-6 7-4-7-4 7-6-7z"/><path d="M5 20h14"/></svg>`,
+  exclusive: `<svg viewBox="0 0 24 24" fill="none" stroke="#c79a4a" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.5 8.5 23 9.5 17.5 15 19 22 12 18.5 5 22 6.5 15 1 9.5 8.5 8.5 12 2"/></svg>`,
+  preorder: `<svg viewBox="0 0 24 24" fill="none" stroke="#c79a4a" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>`,
 };
 
-let currentMode = '3a';
-
-function setMode(mode) {
-  currentMode = mode;
-  document.body.className = 'mode-' + mode;
-  document.querySelectorAll('.icon-switcher button').forEach(b => b.classList.remove('active'));
-  event.target.classList.add('active');
-  // パネルを再描画
-  const activeTab = document.querySelector('.site-tab.active');
-  if (activeTab) {
-    const siteKey = activeTab.dataset.site;
-    if (cache[siteKey]) renderAndMount(siteKey, cache[siteKey]);
-  }
-}
+const currentMode = '3c';
 
 function sectionIconHtml(path) {
-  const stroke = currentMode === '3a' ? '#e3c081' : '#c79a4a';
-  if (currentMode === '3a') {
-    return `<span style="display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:50%;background:var(--plum-dark);flex:none"><svg viewBox="0 0 24 24" fill="none" stroke="${stroke}" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="13" height="13">${path}</svg></span>`;
-  }
-  return `<span style="display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;flex:none"><svg viewBox="0 0 24 24" fill="none" stroke="${stroke}" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" width="18" height="18">${path}</svg></span>`;
+  return `<span style="display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;flex:none"><svg viewBox="0 0 24 24" fill="none" stroke="#c79a4a" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" width="18" height="18">${path}</svg></span>`;
 }
 
 function iconHtml(type) {
-  const svg = ICONS[type]?.[currentMode] || '';
-  if (!svg) return '';
-  const cls = currentMode === '3a' ? 'icon-3a' : 'icon-3c';
-  return `<span class="${cls}">${svg}</span>`;
+  const svg = ICONS[type] || '';
+  return `<div class="icon-3c">${svg}</div>`;
 }
 
 const SOURCES = {
